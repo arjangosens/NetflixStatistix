@@ -10,6 +10,7 @@ public class TVshow {
     private String language;
     private int age;
     private ArrayList<Episode> episodes;
+    //TODO: Add object variable for relatedTO
 
     public TVshow(String title, String genre, String language, int age, ArrayList<Episode> episodes) {
         this.title = title;
