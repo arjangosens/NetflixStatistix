@@ -1,6 +1,6 @@
 package applicationLogic;
 
-public class Program {
+public abstract class Program {
 
     private String title;
     private double duration;
