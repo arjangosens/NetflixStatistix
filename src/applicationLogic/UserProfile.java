@@ -11,4 +11,15 @@ public class UserProfile {
         this.viewBehaviour = new ViewBehaviour();
     }
 
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public ViewBehaviour getViewBehaviour() {
+        return viewBehaviour;
+    }
 }
