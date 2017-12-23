@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class MainFrame extends JFrame implements Runnable {
     private SideMenu sideMenu;
-    private Footer footer;
 
     @Override
     public void run() {
