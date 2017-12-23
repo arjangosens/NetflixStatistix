@@ -20,7 +20,10 @@ public class MainFrame extends JFrame implements Runnable {
     }
 
     private void createComponents(Container container) {
+        this.setLayout(new BorderLayout());
+        Footer footer = new Footer();
 
+        container.add(footer, BorderLayout.SOUTH);
     }
 
 }
