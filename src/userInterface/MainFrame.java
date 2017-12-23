@@ -1,9 +1,26 @@
 package userInterface;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class MainFrame {
-    private JFrame frame;
+public class MainFrame extends JFrame implements Runnable {
     private SideMenu sideMenu;
     private Footer footer;
+
+    @Override
+    public void run() {
+        this.setTitle("Netflix Statistix");
+        this.setSize(new Dimension(500, 500));
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        createComponents(this.getContentPane());
+
+        this.pack();
+        this.setVisible(true);
+    }
+
+    private void createComponents(Container container) {
+
+    }
+
 }
