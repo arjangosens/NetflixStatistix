@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class MainFrame extends JFrame implements Runnable {
     private SideMenu sideMenu;
-    private Footer footer;
 
     @Override
     public void run() {
@@ -20,7 +19,10 @@ public class MainFrame extends JFrame implements Runnable {
     }
 
     private void createComponents(Container container) {
+        this.setLayout(new BorderLayout());
+        Footer footer = new Footer();
 
+        container.add(footer, BorderLayout.SOUTH);
     }
 
 }
