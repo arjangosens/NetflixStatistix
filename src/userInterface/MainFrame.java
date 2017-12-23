@@ -1,5 +1,7 @@
 package userInterface;
 
+import javafx.geometry.Side;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,8 +22,10 @@ public class MainFrame extends JFrame implements Runnable {
 
     private void createComponents(Container container) {
         this.setLayout(new BorderLayout());
+        sideMenu = new SideMenu();
         Footer footer = new Footer();
 
+        container.add(sideMenu, BorderLayout.WEST);
         container.add(footer, BorderLayout.SOUTH);
     }
 
