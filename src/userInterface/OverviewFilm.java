@@ -21,9 +21,8 @@ public class OverviewFilm implements Overview {
         this.data = data;
     }
 
-
     @Override
-    public void createComponents(Container container) {
+    public void createComponents() {
 
     }
 }
