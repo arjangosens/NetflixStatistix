@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame implements Runnable {
+    private HomeScreen homeScreen;
     private SideMenu sideMenu;
 
     @Override
@@ -21,12 +22,14 @@ public class MainFrame extends JFrame implements Runnable {
 
     private void createComponents(Container container) {
         this.setLayout(new BorderLayout());
+        homeScreen = new HomeScreen();
         sideMenu = new SideMenu();
         OverviewFilm overviewFilm = new OverviewFilm();
         Footer footer = new Footer();
 
+        container.add(homeScreen);
         container.add(sideMenu, BorderLayout.WEST);
-        container.add(overviewFilm);
+//        container.add(overviewFilm);
         container.add(footer, BorderLayout.SOUTH);
     }
 
