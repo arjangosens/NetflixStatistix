@@ -1,5 +1,7 @@
 package userInterface;
 
+import applicationLogic.OverviewSwitchController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,7 +32,8 @@ public class SideMenu extends JPanel{
         tvShowOverviewBtn = new JButton("TvShow");
         filmOverviewBtn = new JButton("Film");
 
-//        subsOverviewBtn.setPreferredSize(new Dimension( 100,50));
+        homeBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.HOMESCREENPANEL));
+        filmOverviewBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.OVERVIEWFILMPANEL));
 
         this.add(homeBtn);
         this.add(subsOverviewBtn);

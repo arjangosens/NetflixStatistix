@@ -11,8 +11,8 @@ public class OverviewSwitchPanel extends JPanel {
     private HomeScreen homeScreen;
     private OverviewFilm overviewFilm;
 
-    private final static String HOMESCREENPANEL = "HomeScreenPanel";
-    private final static String OVERVIEWFILMPANEL = "OverviewFilmPanel";
+    public final static String HOMESCREENPANEL = "HomeScreenPanel";
+    public final static String OVERVIEWFILMPANEL = "OverviewFilmPanel";
 
     public OverviewSwitchPanel() {
         // Create the panels
