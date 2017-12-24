@@ -11,12 +11,11 @@ public class MainFrame extends JFrame implements Runnable {
     @Override
     public void run() {
         this.setTitle("Netflix Statistix");
-        this.setSize(new Dimension(500, 500));
+        this.setSize(new Dimension(700, 700));
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         createComponents(this.getContentPane());
 
-        this.pack();
         this.setVisible(true);
     }
 

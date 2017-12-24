@@ -1,6 +1,7 @@
 package userInterface;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class SideMenu extends JPanel{
     private JButton subsOverviewBtn;
@@ -10,10 +11,9 @@ public class SideMenu extends JPanel{
 
     public SideMenu() {
         // Set Layout
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        // Set background to check how big this panel is
-        this.setBackground(java.awt.Color.BLUE);
+        GridLayout gridLayout = new GridLayout(4, 1);
+        gridLayout.setVgap(10);
+        this.setLayout(gridLayout);
 
         // Create the components
         createComponents();
@@ -28,14 +28,8 @@ public class SideMenu extends JPanel{
         tvShowOverviewBtn = new JButton("TvShow");
         filmOverviewBtn = new JButton("Film");
 
-        subsOverviewBtn.setSize(200, 100);
-        profileOverviewBtn.setSize(200, 100);
-        tvShowOverviewBtn.setSize(200, 100);
-        filmOverviewBtn.setSize(200, 100);
+        subsOverviewBtn.setPreferredSize(new Dimension( 100,50));
 
-        JLabel header = new JLabel("Overviews");
-
-        this.add(header);
         this.add(subsOverviewBtn);
         this.add(profileOverviewBtn);
         this.add(tvShowOverviewBtn);
