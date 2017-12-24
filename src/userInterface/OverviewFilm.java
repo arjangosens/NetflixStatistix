@@ -30,7 +30,13 @@ public class OverviewFilm extends JPanel implements Overview {
     @Override
     public void createComponents() {
         // Create test items for comboBox
-        String[] testValues = {"Select film", "Lord of the Rings", "Pepa Pig", "Frozen", "Buurman en Buurman", "The pick of destiny"};
+        String[] testValues = {
+                "Select film", "Lord of the Rings",
+                "Pepa Pig",
+                "Frozen",
+                "Buurman en Buurman",
+                "The pick of destiny"
+        };
 
         // Create comboBox
         filmDropDown = new JComboBox(testValues);
@@ -39,7 +45,30 @@ public class OverviewFilm extends JPanel implements Overview {
         JLabel labelFilmDropDown = new JLabel("Select a film");
         labelFilmDropDown.setLabelFor(filmDropDown);
 
+        // Create column names
+        String[] columnNames = {
+                "Title",
+                "Genre",
+                "Language",
+                "Duration in minutes",
+                "Age"
+        };
+
+        // Create test data for JTable
+        Object[][] testData = {
+            {"Lord of the Rings", "Leuk", "English", 200, 12},
+            {"Pepa Pig", "Child", "Dutch", 120, 3},
+            {"Frozen", "Leuk", "English", 97, 9},
+            {"Buurman en Buurman", "Facking Leuk!", "Dutch", 30, 3},
+            {"The pick of destiny", "Awesome", "English", 120, 12}
+        };
+
+        // Create JTable
+        jTable = new JTable(testData, columnNames);
+        JScrollPane scrollPane = new JScrollPane(jTable);
+
         this.add(labelFilmDropDown);
         this.add(filmDropDown);
+        this.add(scrollPane);
     }
 }
