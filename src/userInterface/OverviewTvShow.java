@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class OverviewTvShow extends JPanel implements Overview{
+public class OverviewTvShow extends JPanel implements Overview {
     private JComboBox tvShowDropDown;
     private ArrayList<TVshow> tVshows;
     private ArrayList<Episode> episodes;
@@ -28,16 +28,17 @@ public class OverviewTvShow extends JPanel implements Overview{
         };
 
         String[] columnNames = {
-            "Title",
-            "Genre",
-            "Language",
-            "Age"
+                "Episode number",
+                "Title",
+                "Genre",
+                "Language",
+                "Age"
         };
 
         Object[][] data = {
-                {"The walking dead", "Zombi", "English", 18},
-                {"Breaking Bad", "IDK", "Ënglish", 12},
-                {"Friends", "Saai", "English", 3}
+                {"S1E1", "The walking dead", "Zombi", "English", 18},
+                {"S1E2", "Breaking Bad", "IDK", "Ënglish", 12},
+                {"S2E1", "Friends", "Saai", "English", 3}
         };
 
         tvShowDropDown = new JComboBox(testItems);
