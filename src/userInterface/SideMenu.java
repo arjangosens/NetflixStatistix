@@ -33,6 +33,7 @@ public class SideMenu extends JPanel{
         filmOverviewBtn = new JButton("Film");
 
         homeBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.HOMESCREENPANEL));
+        tvShowOverviewBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.OVERVIEWTVSHOW));
         filmOverviewBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.OVERVIEWFILMPANEL));
 
         this.add(homeBtn);
