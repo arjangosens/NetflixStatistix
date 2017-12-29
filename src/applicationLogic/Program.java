@@ -7,6 +7,7 @@ public abstract class Program {
     private double duration;
 
     public Program(int programId, String title, double duration) {
+        this.programId = programId;
         this.title = title;
         this.duration = duration;
     }

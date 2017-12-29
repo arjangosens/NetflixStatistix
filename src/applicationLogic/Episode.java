@@ -29,5 +29,5 @@ public class Episode extends Program {
     public void settVshow(TVshow tVshow) {
         this.tVshow = tVshow;
     }
-    
+
 }
