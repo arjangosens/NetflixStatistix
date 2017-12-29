@@ -27,8 +27,6 @@ public class DatabaseConnector {
             connection = DriverManager.getConnection(connectionUrl);
         } catch (Exception e) {
             System.out.println(e);
-        } finally {
-            if (connection != null) try { connection.close(); } catch(Exception e) {}
         }
 
         return connection;
