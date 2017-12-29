@@ -2,14 +2,17 @@ package database;
 
 import applicationLogic.TVshow;
 
+import javax.xml.transform.Result;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TvShowDAO {
 
     private DatabaseConnector databaseConnector;
-    private Connection connection;
 
     public TvShowDAO(DatabaseConnector databaseConnector) {
         this.databaseConnector = databaseConnector;
@@ -23,6 +26,7 @@ public class TvShowDAO {
     public TVshow get(int id) {
         // The tvShow that will be returned when it is found.
         TVshow tvshow = null;
+        Connection connection = null;
 
         try {
             // Create a connection
@@ -37,10 +41,6 @@ public class TvShowDAO {
             // Execute the query. After executing there will be a resultSet stored in this variable.
             ResultSet resultSet = statement.executeQuery(query);
 
-
-
-//            System.out.print(String.format("| %2s | %2s | %20s | %20s | %10s | %2s |\n", " ", " ", " ", " ", " ", " ").replace(" ", "-"));
-
             while (resultSet.next()) {
                 int tvShowId = resultSet.getInt("tvshowId");
                 int backup = resultSet.getInt("tvshowBackUp");
@@ -49,11 +49,10 @@ public class TvShowDAO {
                 String language = resultSet.getString("languageTvShow");
                 int age = resultSet.getInt("age");
 
+                // Store the new TVshow in the variable.
                 tvshow = new TVshow(tvShowId, backup, title, genre, language, age);
-//                System.out.format("| %2d | %2d | %20s | %20s | %10s | %2d | \n", tvShowId, backup, title, genre, language, age);
             }
 
-//            System.out.print(String.format("| %2s | %2s | %20s | %20s | %10s | %2s |\n", " ", " ", " ", " ", " ", " ").replace(" ", "-"));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -61,5 +60,43 @@ public class TvShowDAO {
         }
 
         return tvshow;
+    }
+
+    public Set<TVshow> getAll() {
+        HashSet<TVshow> tVshows = new HashSet<>();
+        Connection connection = null;
+
+        try {
+            // Get the connection with the database
+            connection = databaseConnector.getConnection();
+
+            // Create the SQL query that will be used to find all the tvshows
+            String query = "SELECT * FROM TVshow";
+
+            // Create a statement. Without a Statement you can not execute the query.
+            Statement statement = connection.createStatement();
+
+            // Store the results of the query in this variable.
+            ResultSet resultSet = statement.executeQuery(query);
+
+            // Loop through every result
+            while (resultSet.next()) {
+                int tvShowId = resultSet.getInt("tvshowId");
+                int backup = resultSet.getInt("tvshowBackUp");
+                String title = resultSet.getString("title");
+                String genre = resultSet.getString("genre");
+                String language = resultSet.getString("languageTvShow");
+                int age = resultSet.getInt("age");
+
+                tVshows.add(new TVshow(tvShowId, backup, title, genre, language, age));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) try { connection.close(); } catch (Exception e) {e.printStackTrace();}
+        }
+
+        return tVshows;
     }
 }
