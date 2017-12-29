@@ -3,24 +3,31 @@ package applicationLogic;
 public class Episode extends Program {
 
     private int episodeId;
-    private int episodeNumber;
+    private int tvShowId;
+    private String episodeNumber;
     private TVshow tVshow;
 
-    public Episode(String title, double duration, int episodeNumber, TVshow tVshow) {
-        super(title, duration);
+    public Episode(int episodeId, int programId, int tvShowId, String title, double duration, String episodeNumber) {
+        super(programId, title, duration);
+        this.episodeId = episodeId;
+        this.tvShowId = tvShowId;
         this.episodeNumber = episodeNumber;
-        this.tVshow = tVshow;
     }
 
     public int getEpisodeId() {
         return episodeId;
     }
 
-    public int getEpisodeNumber() {
+    public String getEpisodeNumber() {
         return episodeNumber;
     }
 
     public TVshow gettVshow() {
         return tVshow;
     }
+
+    public void settVshow(TVshow tVshow) {
+        this.tVshow = tVshow;
+    }
+
 }
