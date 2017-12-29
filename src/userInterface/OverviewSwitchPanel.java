@@ -9,16 +9,19 @@ import java.awt.*;
 public class OverviewSwitchPanel extends JPanel {
 
     private HomeScreen homeScreen;
+    private OverviewProfile overviewProfile;
     private OverviewTvShow overviewTvShow;
     private OverviewFilm overviewFilm;
 
     public final static String HOMESCREENPANEL = "HomeScreenPanel";
+    public final static String OVERVIEWPROFILEPANEL = "OverviewProfilePanel";
     public final static String OVERVIEWTVSHOW = "OverviewTvShowPanel";
     public final static String OVERVIEWFILMPANEL = "OverviewFilmPanel";
 
     public OverviewSwitchPanel() {
         // Create the panels
         homeScreen = new HomeScreen();
+        overviewProfile = new OverviewProfile();
         overviewTvShow = new OverviewTvShow();
         overviewFilm = new OverviewFilm();
 
@@ -27,6 +30,7 @@ public class OverviewSwitchPanel extends JPanel {
 
         // Add the panels to the CardLayout
         this.add(homeScreen, HOMESCREENPANEL);
+        this.add(overviewProfile, OVERVIEWPROFILEPANEL);
         this.add(overviewTvShow, OVERVIEWTVSHOW);
         this.add(overviewFilm, OVERVIEWFILMPANEL);
     }
