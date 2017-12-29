@@ -1,6 +1,10 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.TvShowDAO;
+
 import java.util.ArrayList;
+import java.util.Set;
 
 public class TVshow {
 
@@ -49,16 +53,18 @@ public class TVshow {
         this.episodes = episodes;
     }
 
+    public static TVshow get(int id) {
+        TvShowDAO tvShowDAO = new TvShowDAO(new DatabaseConnector());
+        return tvShowDAO.get(id);
+    }
+
+    public static Set<TVshow> getAll() {
+        TvShowDAO tvShowDAO = new TvShowDAO(new DatabaseConnector());
+        return tvShowDAO.getAll();
+    }
+
     @Override
     public String toString() {
-        return "TVshow{" +
-                "tvshowId=" + tvshowId +
-                ", backup=" + backup +
-                ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", language='" + language + '\'' +
-                ", age=" + age +
-                ", episodes=" + episodes +
-                '}';
+        return title;
     }
 }
