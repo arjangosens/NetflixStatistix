@@ -1,12 +1,10 @@
 package database;
 
 import applicationLogic.Episode;
-import applicationLogic.Program;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 

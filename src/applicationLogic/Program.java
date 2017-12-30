@@ -12,6 +12,10 @@ public abstract class Program {
         this.duration = duration;
     }
 
+    public int getProgramId() {
+        return programId;
+    }
+
     public String getTitle() {
         return title;
     }
