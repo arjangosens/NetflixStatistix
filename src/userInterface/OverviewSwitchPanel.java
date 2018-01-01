@@ -12,11 +12,13 @@ public class OverviewSwitchPanel extends JPanel {
     private OverviewProfile overviewProfile;
     private OverviewTvShow overviewTvShow;
     private OverviewFilm overviewFilm;
+    private OverviewSubscriptions overviewSubscriptions;
 
     public final static String HOMESCREENPANEL = "HomeScreenPanel";
     public final static String OVERVIEWPROFILEPANEL = "OverviewProfilePanel";
     public final static String OVERVIEWTVSHOW = "OverviewTvShowPanel";
     public final static String OVERVIEWFILMPANEL = "OverviewFilmPanel";
+    public final static String OVERVIEWSUBSCRIPTIONS = "OverviewSubscriptionsPanel";
 
     public OverviewSwitchPanel() {
         // Create the panels
@@ -24,6 +26,7 @@ public class OverviewSwitchPanel extends JPanel {
         overviewProfile = new OverviewProfile();
         overviewTvShow = new OverviewTvShow();
         overviewFilm = new OverviewFilm();
+        overviewSubscriptions = new OverviewSubscriptions();
 
         // Set the actual CardLayout
         this.setLayout(new CardLayout());
@@ -33,6 +36,7 @@ public class OverviewSwitchPanel extends JPanel {
         this.add(overviewProfile, OVERVIEWPROFILEPANEL);
         this.add(overviewTvShow, OVERVIEWTVSHOW);
         this.add(overviewFilm, OVERVIEWFILMPANEL);
+        this.add(overviewSubscriptions, OVERVIEWSUBSCRIPTIONS);
     }
 
     /**

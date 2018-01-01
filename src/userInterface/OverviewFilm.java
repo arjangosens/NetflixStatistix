@@ -7,7 +7,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class OverviewFilm extends JPanel implements Overview {
-    private JComboBox filmDropDown;
     private ArrayList<Film> films;
     private JTable jTable;
     private String[] columnNames;
@@ -16,16 +15,6 @@ public class OverviewFilm extends JPanel implements Overview {
     public OverviewFilm(){
         createComponents();
     }
-
-//    public OverviewFilm(String[] columnNames, Object[][] data) {
-//        this.filmDropDown = new JComboBox();
-//        this.films =  new ArrayList<Film>();
-//        this.jTable = new JTable();
-//        this.columnNames = columnNames;
-//        this.data = data;
-//
-//        createComponents();
-//    }
 
     @Override
     public void createComponents() {
@@ -37,13 +26,6 @@ public class OverviewFilm extends JPanel implements Overview {
                 "Buurman en Buurman",
                 "The pick of destiny"
         };
-
-        // Create comboBox
-        filmDropDown = new JComboBox(testValues);
-
-        // Create Label for combobox
-        JLabel labelFilmDropDown = new JLabel("Select a film");
-        labelFilmDropDown.setLabelFor(filmDropDown);
 
         // Create column names
         String[] columnNames = {
@@ -67,8 +49,6 @@ public class OverviewFilm extends JPanel implements Overview {
         jTable = new JTable(testData, columnNames);
         JScrollPane scrollPane = new JScrollPane(jTable);
 
-        this.add(labelFilmDropDown);
-        this.add(filmDropDown);
         this.add(scrollPane);
     }
 }

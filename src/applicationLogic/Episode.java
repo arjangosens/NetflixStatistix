@@ -1,5 +1,10 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.EpisodeDAO;
+
+import java.util.Set;
+
 public class Episode extends Program {
 
     private int episodeId;
@@ -18,16 +23,29 @@ public class Episode extends Program {
         return episodeId;
     }
 
+    public int getTvShowId() {
+        return tvShowId;
+    }
+
     public String getEpisodeNumber() {
         return episodeNumber;
     }
 
-    public TVshow gettVshow() {
+    public TVshow getTvshow() {
         return tVshow;
     }
 
-    public void settVshow(TVshow tVshow) {
+    public void setTvshow(TVshow tVshow) {
         this.tVshow = tVshow;
     }
-    
+
+    public static Set<Episode> getAll() {
+        EpisodeDAO episodeDAO = new EpisodeDAO(new DatabaseConnector());
+        return episodeDAO.getAll();
+    }
+
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }
