@@ -9,6 +9,7 @@ public class Film extends Program {
 
     public Film(int filmId, int programId, String title, double duration, String genre, String language, int age) {
         super(programId, title, duration);
+        this.filmId = filmId;
         this.genre = genre;
         this.language = language;
         this.age = age;
