@@ -1,5 +1,10 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.FilmDAO;
+
+import java.util.Set;
+
 public class Film extends Program {
 
     private int filmId;
@@ -29,5 +34,10 @@ public class Film extends Program {
 
     public int getAge() {
         return age;
+    }
+
+    public static Set<Film> getAll() {
+        FilmDAO filmDAO = new FilmDAO(new DatabaseConnector());
+        return filmDAO.getAll();
     }
 }
