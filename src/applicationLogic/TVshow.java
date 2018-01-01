@@ -1,23 +1,28 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.TvShowDAO;
+
 import java.util.ArrayList;
+import java.util.Set;
 
 public class TVshow {
 
     private int tvshowId;
+    private int backup;
     private String title;
     private String genre;
     private String language;
     private int age;
     private ArrayList<Episode> episodes;
-    //TODO: Add object variable for relatedTO
 
-    public TVshow(String title, String genre, String language, int age, ArrayList<Episode> episodes) {
+    public TVshow(int tvshowId, int backup, String title, String genre, String language, int age) {
+        this.tvshowId = tvshowId;
+        this.backup = backup;
         this.title = title;
         this.genre = genre;
         this.language = language;
         this.age = age;
-        this.episodes = episodes;
     }
 
     public int getTvshowId() {
@@ -42,5 +47,24 @@ public class TVshow {
 
     public ArrayList<Episode> getEpisodes() {
         return episodes;
+    }
+
+    public void setEpisodes(ArrayList<Episode> episodes) {
+        this.episodes = episodes;
+    }
+
+    public static TVshow get(int id) {
+        TvShowDAO tvShowDAO = new TvShowDAO(new DatabaseConnector());
+        return tvShowDAO.get(id);
+    }
+
+    public static Set<TVshow> getAll() {
+        TvShowDAO tvShowDAO = new TvShowDAO(new DatabaseConnector());
+        return tvShowDAO.getAll();
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 }
