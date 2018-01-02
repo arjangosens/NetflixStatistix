@@ -69,7 +69,11 @@ public class OverviewTvShow extends JPanel implements Overview {
         JLabel forTvshowDropdown = new JLabel("Select a tvShow");
         forTvshowDropdown.setLabelFor(tvShowDropDown);
 
-        tableData(tvShowDropDown.getSelectedItem().toString());
+        try {
+            tableData(tvShowDropDown.getSelectedItem().toString());
+        } catch (NullPointerException e) {
+            System.out.println("Could not get TvShow table data");
+        }
         if (data == null) {
             data = new Object[][]{};
         }
