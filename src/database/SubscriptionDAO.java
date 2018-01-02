@@ -1,6 +1,7 @@
 package database;
 
 import applicationLogic.Subscription;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -103,35 +104,39 @@ public class SubscriptionDAO {
         return subscriptionSet;
     }
 
-//    public void update(Subscription subscription) {
-//        Connection connection = null;
-//
-//        try {
-//            // Create connection with database
-//            connection = databaseConnector.getConnection();
-//
-//            // Form SQL query to update Subscription
-//            String query = "ALTER TABLE Subscription WHERE subscriptionId = " + subscription.getSubscriptionId() + "; ALTER COLUMN nameSubscriber";
-//
-//            // Create statement used to execute the query
-//            Statement statement = connection.createStatement();
-//
-//            // Execute the query. After executing a Resultset will be stored in this variable
-//            ResultSet resultSet = statement.executeQuery(query);
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (connection != null) {
-//                try {
-//                    connection.close();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
+    public void update(Subscription subscription) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to update Subscription
+            /**
+             * 
+             * TODO: Write a correct query
+             */
+            String query = "ALTER TABLE Subscription WHERE subscriptionId = " + subscription.getSubscriptionId() + "; ALTER COLUMN nameSubscriber";
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+
+            // Execute the query. After executing a Resultset will be stored in this variable
+            ResultSet resultSet = statement.executeQuery(query);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     public void insert(Subscription subscription) {
         Connection connection = null;
