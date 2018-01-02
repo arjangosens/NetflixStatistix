@@ -1,8 +1,6 @@
 package database;
 
 import applicationLogic.Subscription;
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -113,7 +111,7 @@ public class SubscriptionDAO {
 
             // Form SQL query to update Subscription
             /**
-             * 
+             *
              * TODO: Write a correct query
              */
             String query = "ALTER TABLE Subscription WHERE subscriptionId = " + subscription.getSubscriptionId() + "; ALTER COLUMN nameSubscriber";
