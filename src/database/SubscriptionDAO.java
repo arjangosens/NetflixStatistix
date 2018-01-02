@@ -167,4 +167,33 @@ public class SubscriptionDAO {
         }
     }
 
+    public void delete(Subscription subscription) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to search for Subscriptions
+            String query = "DELETE FROM Subscription WHERE subscriptionId = " + subscription.getSubscriptionId();
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+
+            // Execute the query. After executing a Resultset will be stored in this variable
+            ResultSet resultSet = statement.executeQuery(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
