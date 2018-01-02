@@ -3,18 +3,24 @@ package applicationLogic;
 import java.util.ArrayList;
 
 public class Subscription {
+    private int subscriptionId;
     private String subName;
     private String street;
     private String houseNumber;
     private String city;
     private ArrayList profiles;
 
-    public Subscription(String subName, String street, String houseNumber, String city) {
+    public Subscription(int subscriptionId, String subName, String street, String houseNumber, String city) {
+        this.subscriptionId = subscriptionId;
         this.subName = subName;
         this.street = street;
         this.houseNumber = houseNumber;
         this.city = city;
         this.profiles = new ArrayList();
+    }
+
+    public int getSubscriptionId() {
+        return subscriptionId;
     }
 
     public String getSubName() {
