@@ -15,20 +15,22 @@ public class OverviewTvShow extends JPanel implements Overview {
     private JComboBox tvShowDropDown;
     private String[] tvShowTitles;
     private ArrayList<TVshow> allTvShows;
+    private ArrayList<Episode> allEpisodes;
     private String[] columnNames;
     private Object[][] data;
 
     OverviewTvShow() {
-        Set<TVshow> tvShows = TVshow.getAll();
-        Set<Episode> episodes = Episode.getAll();
-        prepareContent(tvShows, episodes);
+        allTvShows = TVshow.getAll();
+        allEpisodes = Episode.getAll();
+        prepareContent();
         createComponents();
     }
 
-    private void prepareContent(Set<TVshow> tvShows, Set<Episode> episodes) {
-        tvShowTitles = new String[tvShows.size()];
-        allTvShows = new ArrayList<>();
-        ArrayList<Episode> allEpisodes = new ArrayList<>();
+    /**
+     * This method creates the columnNames and sets the tvShow for an episode and sets the episodes for a tvShow
+     */
+    private void prepareContent() {
+        tvShowTitles = new String[allTvShows.size()];
 
         columnNames = new String[]{
                 "Episode number",
@@ -38,14 +40,6 @@ public class OverviewTvShow extends JPanel implements Overview {
                 "Age",
                 "Duration"
         };
-
-        for (TVshow tVshow : tvShows) {
-            Collections.addAll(allTvShows, tVshow);
-        }
-
-        for (Episode episode : episodes) {
-            Collections.addAll(allEpisodes, episode);
-        }
 
         for (TVshow tvShow : allTvShows) {
             ArrayList<Episode> episodesByTvShow = new ArrayList<>();
