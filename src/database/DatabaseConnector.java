@@ -10,7 +10,10 @@ public class DatabaseConnector {
      * Change this url to the settings that you need for your connection.
      * Because this string will not be the same for everyone.
      */
+//    private final String connectionUrl = "jdbc:sqlserver://DESKTOP-J0l042L:1433;databaseName=NetflixStatistics;user=SchoolProject;password=school;";
+//    private final String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=NetflixStatistics;integratedSecurity=true;";
     private final String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS2017:1444;databaseName=NetflixStatistics;user=SchoolProject;password=school;";
+
 
     /**
      * This is the connection with the database.

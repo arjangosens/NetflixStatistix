@@ -4,6 +4,7 @@ import database.DatabaseConnector;
 import database.TvShowDAO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Set;
 
 public class TVshow {
@@ -58,9 +59,16 @@ public class TVshow {
         return tvShowDAO.get(id);
     }
 
-    public static Set<TVshow> getAll() {
+    public static ArrayList<TVshow> getAll() {
         TvShowDAO tvShowDAO = new TvShowDAO(new DatabaseConnector());
-        return tvShowDAO.getAll();
+        Set<TVshow> tvShows = tvShowDAO.getAll();
+        ArrayList<TVshow> allTvShows = new ArrayList<>();
+
+        for (TVshow tVshow : tvShows) {
+            Collections.addAll(allTvShows, tVshow);
+        }
+
+        return allTvShows;
     }
 
     @Override

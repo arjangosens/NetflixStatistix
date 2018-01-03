@@ -1,34 +1,29 @@
 package userInterface;
 
 import applicationLogic.Film;
+import database.FilmDAO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 
 public class OverviewFilm extends JPanel implements Overview {
-    private ArrayList<Film> films;
+    private ArrayList<Film> films = new ArrayList<>();
     private JTable jTable;
     private String[] columnNames;
     private Object[][] data;
 
     public OverviewFilm(){
+        Set<Film> filmSet = Film.getAll();
+        prepareContent(filmSet);
         createComponents();
     }
 
-    @Override
-    public void createComponents() {
-        // Create test items for comboBox
-        String[] testValues = {
-                "Select film", "Lord of the Rings",
-                "Pepa Pig",
-                "Frozen",
-                "Buurman en Buurman",
-                "The pick of destiny"
-        };
-
+    private void prepareContent(Set<Film> filmSet) {
         // Create column names
-        String[] columnNames = {
+        columnNames = new String[]{
                 "Title",
                 "Genre",
                 "Language",
@@ -36,17 +31,27 @@ public class OverviewFilm extends JPanel implements Overview {
                 "Age"
         };
 
-        // Create test data for JTable
-        Object[][] testData = {
-            {"Lord of the Rings", "Leuk", "English", 200, 12},
-            {"Pepa Pig", "Child", "Dutch", 120, 3},
-            {"Frozen", "Leuk", "English", 97, 9},
-            {"Buurman en Buurman", "Facking Leuk!", "Dutch", 30, 3},
-            {"The pick of destiny", "Awesome", "English", 120, 12}
-        };
+        for (Film film : filmSet) {
+            Collections.addAll(films, film);
+        }
 
+        data = new Object[films.size()][5];
+        for (int i = 0; i < films.size(); i++) {
+            Object[] x = new Object[5];
+            x[0] = films.get(i).getTitle();
+            x[1] = films.get(i).getGenre();
+            x[2] = films.get(i).getLanguage();
+            x[3] = films.get(i).getDuration();
+            x[4] = films.get(i).getAge();
+
+            data[i] = x;
+        }
+    }
+
+    @Override
+    public void createComponents() {
         // Create JTable
-        jTable = new JTable(testData, columnNames);
+        jTable = new JTable(data, columnNames);
         JScrollPane scrollPane = new JScrollPane(jTable);
 
         this.add(scrollPane);
