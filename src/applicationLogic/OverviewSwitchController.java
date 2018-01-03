@@ -1,6 +1,5 @@
 package applicationLogic;
 
-import sun.applet.Main;
 import userInterface.MainFrame;
 import userInterface.OverviewSwitchPanel;
 
