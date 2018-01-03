@@ -1,7 +1,11 @@
 package userInterface;
 
+import applicationLogic.Subscription;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class OverviewSubscriptions extends JPanel implements Overview {
 
@@ -46,6 +50,13 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         // This button should add a new id to the dropdown and (if possible) should focus on said new id.
         createNewSubButton = new JButton("Create new subscription");
+        createNewSubButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String text = JOptionPane.showInputDialog(null, "Subscription name: ");
+                subsDropDown.addItem(text);
+            }
+        });
 
         connectedProfilesJTable = new JTable(data, columnNames);
         JScrollPane jScrollPane = new JScrollPane(connectedProfilesJTable);
