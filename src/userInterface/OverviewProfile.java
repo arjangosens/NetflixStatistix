@@ -1,6 +1,6 @@
 package userInterface;
 
-import sun.java2d.cmm.Profile;
+import applicationLogic.UserProfile;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class OverviewProfile extends JPanel implements Overview {
 
     private JComboBox profileDropDown;
-    private ArrayList<Profile> profiles;
+    private ArrayList<UserProfile> profiles;
     private JTable jTable;
     private String[] columnNames;
     private Object[][] data;
