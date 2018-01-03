@@ -1,7 +1,6 @@
 package userInterface;
 
 import applicationLogic.UserProfile;
-import sun.java2d.cmm.Profile;
 
 import javax.swing.*;
 import java.util.ArrayList;
