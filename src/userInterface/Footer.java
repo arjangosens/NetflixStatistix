@@ -1,39 +1,33 @@
 package userInterface;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class Footer {
-    private JLabel projectName;
-    private JLabel courseName;
-    private JLabel courseYear;
-    private JLabel className;
-    private JLabel studentNames;
+public class Footer extends JPanel{
 
-    public Footer(JLabel projectName, JLabel courseName, JLabel courseYear, JLabel className, JLabel studentNames) {
-        this.projectName = projectName;
-        this.courseName = courseName;
-        this.courseYear = courseYear;
-        this.className = className;
-        this.studentNames = studentNames;
+    public Footer() {
+        // Set a gridLayout to get a nice and even divided footer
+        this.setLayout(new GridLayout(1, 5));
+
+        // Create the components
+        createComponents();
     }
 
-    public JLabel getProjectName() {
-        return projectName;
+    /**
+     * Creates the components that will be displayed in the footer.
+     */
+    private void createComponents() {
+        JLabel projectName = new JLabel("Netflix Statistix");
+        JLabel courseName = new JLabel("Trio opdracht");
+        JLabel courseYear = new JLabel("2017/2018");
+        JLabel className = new JLabel("23IVT1B");
+        JLabel studentNames = new JLabel("Arjan Gosens, Niek Flipse, Sam Glerum");
+
+        this.add(projectName);
+        this.add(courseName);
+        this.add(courseYear);
+        this.add(className);
+        this.add(studentNames);
     }
 
-    public JLabel getCourseName() {
-        return courseName;
-    }
-
-    public JLabel getCourseYear() {
-        return courseYear;
-    }
-
-    public JLabel getClassName() {
-        return className;
-    }
-
-    public JLabel getStudentNames() {
-        return studentNames;
-    }
 }
