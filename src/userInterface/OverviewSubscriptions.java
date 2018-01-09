@@ -53,8 +53,29 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         createNewSubButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String text = JOptionPane.showInputDialog(null, "Subscription name: ");
-                subsDropDown.addItem(text);
+                // First the input fields are declared (id, subName, streetName, houseNumber, city)
+                JTextField id = new JTextField(5);
+                JTextField subName = new JTextField(40);
+                JTextField streetName = new JTextField(40);
+                JTextField houseNumber = new JTextField(40);
+                JTextField city = new JTextField(40);
+                // A new input panel is created here
+                JPanel inputPanel = new JPanel();
+                // The layout is set to BoxLayout and the positioning is set to the Y_Axis, so the items will be stacked vertically
+                inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+                // Labels are created and added to the input panel
+                inputPanel.add(new JLabel("ID: "));
+                inputPanel.add(id);
+                inputPanel.add(new JLabel("Name:"));
+                inputPanel.add(subName);
+                inputPanel.add(new JLabel("Streetname:"));
+                inputPanel.add(streetName);
+                inputPanel.add(new JLabel("Housenumber:"));
+                inputPanel.add(houseNumber);
+                inputPanel.add(new JLabel("City:"));
+                inputPanel.add(city);
+                // The input panel is shown to the user
+                JOptionPane.showConfirmDialog(null, inputPanel, "Enter your information", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             }
         });
 

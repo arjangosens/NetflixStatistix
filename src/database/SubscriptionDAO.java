@@ -1,7 +1,6 @@
 package database;
 
 import applicationLogic.Subscription;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -104,7 +103,7 @@ public class SubscriptionDAO {
         return subscriptionSet;
     }
 
-    public void update(Subscription subscription) {
+    public void update(String nameSubscriber, String street, String houseNumber, String city, int id) {
         Connection connection = null;
 
         try {
@@ -112,11 +111,12 @@ public class SubscriptionDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to update Subscription
-            /**
-             * 
-             * TODO: Write a correct query
-             */
-            String query = "ALTER TABLE Subscription WHERE subscriptionId = " + subscription.getSubscriptionId() + "; ALTER COLUMN nameSubscriber";
+            String query = String.format("UPDATE Subscription SET nameSubscriber = %s, streetName = %s, houseNumber = %s, city = %s WHERE subscriptionId = %d)",
+                    nameSubscriber,
+                    street,
+                    houseNumber,
+                    city,
+                    id);
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
