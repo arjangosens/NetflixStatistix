@@ -28,6 +28,7 @@ public class SubscriptionDAO {
         try {
             // Create connection with database
             connection = databaseConnector.getConnection();
+            System.out.println("Connecting");
 
             // Form SQL query to search for Subscription
             String query = "SELECT * FROM Subscription WHERE subscriptionId = " + id;
@@ -138,7 +139,7 @@ public class SubscriptionDAO {
         }
     }
 
-    public void insert(Subscription subscription) {
+    public void insert(String subName, String street, String houseNumber, String city) {
         Connection connection = null;
 
         try {
@@ -146,18 +147,19 @@ public class SubscriptionDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to search for Subscriptions
-            String query = String.format("INSERT INTO Subscription VALUES(%d, %s, %s, %s, %s)",
-                    subscription.getSubscriptionId(),
-                    subscription.getSubName(),
-                    subscription.getStreet(),
-                    subscription.getHouseNumber(),
-                    subscription.getCity());
+            String query = String.format("INSERT INTO Subscription (nameSubscriber, streetName, houseNumber, city) VALUES('%s', '%s', '%s', '%s');",
+                    subName,
+                    street,
+                    houseNumber,
+                    city);
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
 
-            // Execute the query. After executing a Resultset will be stored in this variable
-            ResultSet resultSet = statement.executeQuery(query);
+            // Execute query
+            statement.executeUpdate(query);
+            System.out.println("Insert complete");
+
 
         } catch (Exception e) {
             e.printStackTrace();
