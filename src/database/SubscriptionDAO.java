@@ -125,7 +125,6 @@ public class SubscriptionDAO {
             // Execute the query. After executing a Resultset will be stored in this variable
             ResultSet resultSet = statement.executeQuery(query);
 
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -159,7 +158,6 @@ public class SubscriptionDAO {
             // Execute query
             statement.executeUpdate(query);
             System.out.println("Insert complete");
-
 
         } catch (Exception e) {
             e.printStackTrace();

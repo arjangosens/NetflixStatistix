@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class OverviewSubscriptions extends JPanel implements Overview {
 
@@ -47,14 +50,26 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     @Override
     public void createComponents() {
         JLabel subsDropDownLabel = new JLabel("Select subscription");
-        subsDropDown = new JComboBox(new String[]{"(id 1)", "(id 2)", "(id 3)"});
+        subsDropDown = new JComboBox();
         subsDropDownLabel.setLabelFor(subsDropDown);
 
-        // This button should add a new id to the dropdown and (if possible) should focus on said new id.
+        // Create DAO for getting all the registered subscriptions
+        SubscriptionDAO getSubs = new SubscriptionDAO(new DatabaseConnector());
+        // Create Set to store subscriptions
+        Set<Subscription> listOfSubs = new HashSet<Subscription>();
+        // Add all subscriptions found in the database
+        listOfSubs.addAll(getSubs.getAll());
+        // Loop through the set, put each found SubID in the dropdown menu
+        for (Subscription sub : listOfSubs) {
+            subsDropDown.addItem(sub.getSubscriptionId());
+        }
+
+        // This button opens an input screen where users can make a new subscription
         createNewSubButton = new JButton("Create new subscription");
         createNewSubButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                boolean isRunning = true;
                 // First the input fields are declared (subName, streetName, houseNumber, city)
                 JTextField subName = new JTextField(40);
                 JTextField streetName = new JTextField(40);
@@ -74,11 +89,24 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                 inputPanel.add(new JLabel("City:"));
                 inputPanel.add(city);
                 // The input panel is shown to the user
-                JOptionPane.showConfirmDialog(null, inputPanel, "Enter your information", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
                 // Create SubDao to enter data into database
                 SubscriptionDAO subDao = new SubscriptionDAO(new DatabaseConnector());
-                subDao.insert(subName.getText(), streetName.getText(), houseNumber.getText(), city.getText());
+                while (isRunning) {
+                    JOptionPane.showConfirmDialog(null, inputPanel, "Enter your information", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    try {
+                        if (subName.getText().length() > 0 && streetName.getText().length() > 0 && houseNumber.getText().length() > 0 && houseNumber.getText().length() <= 5 && city.getText().length() > 0) {
+                            subDao.insert(subName.getText(), streetName.getText(), houseNumber.getText(), city.getText());
+                            isRunning = false;
+                        } else if (streetName.getText().length() > 5) {
+                            JOptionPane.showMessageDialog(inputPanel, "The housenumber can only be 5 characters long");
+                        } else {
+                            JOptionPane.showMessageDialog(inputPanel, "These fields cannot be empty");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
