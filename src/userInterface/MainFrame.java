@@ -29,6 +29,7 @@ public class MainFrame extends JFrame implements Runnable {
         this.setTitle("Netflix Statistix");
         this.setSize(new Dimension(700, 700));
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
         createComponents(this.getContentPane());
 
