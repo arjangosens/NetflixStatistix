@@ -10,5 +10,6 @@
     <orderEntry type="library" name="sqljdbc42" level="project" />
     <orderEntry type="library" name="mssql-jdbc-6.2.2.jre8" level="project" />
     <orderEntry type="library" name="x64" level="project" />
+    <orderEntry type="library" name="mssql-jdbc-6.2.2.jre81" level="project" />
   </component>
 </module>

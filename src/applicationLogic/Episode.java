@@ -3,6 +3,8 @@ package applicationLogic;
 import database.DatabaseConnector;
 import database.EpisodeDAO;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Set;
 
 public class Episode extends Program {
@@ -39,9 +41,16 @@ public class Episode extends Program {
         this.tVshow = tVshow;
     }
 
-    public static Set<Episode> getAll() {
+    public static ArrayList<Episode> getAll() {
         EpisodeDAO episodeDAO = new EpisodeDAO(new DatabaseConnector());
-        return episodeDAO.getAll();
+        Set<Episode> episodes = episodeDAO.getAll();
+
+        ArrayList<Episode> allEpisodes = new ArrayList<>();
+        for (Episode episode : episodes) {
+            Collections.addAll(allEpisodes, episode);
+        }
+
+        return allEpisodes;
     }
 
     @Override
