@@ -112,7 +112,7 @@ public class SubscriptionDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to update Subscription
-            String query = String.format("UPDATE Subscription SET nameSubscriber = %s, streetName = %s, houseNumber = %s, city = %s WHERE subscriptionId = %d)",
+            String query = String.format("UPDATE Subscription SET nameSubscriber = '%s', streetName = '%s', houseNumber = '%s', city = '%s' WHERE subscriptionId = %d;",
                     nameSubscriber,
                     street,
                     houseNumber,
@@ -121,9 +121,8 @@ public class SubscriptionDAO {
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
 
-            // Execute the query. After executing a Resultset will be stored in this variable
-            ResultSet resultSet = statement.executeQuery(query);
 
         } catch (Exception e) {
             e.printStackTrace();

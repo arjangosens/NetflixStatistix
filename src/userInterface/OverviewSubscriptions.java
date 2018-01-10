@@ -3,6 +3,7 @@ package userInterface;
 import applicationLogic.Subscription;
 import database.DatabaseConnector;
 import database.SubscriptionDAO;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -140,6 +141,29 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         // This button should save the input from the textfields above.
         saveChangesButton = new JButton("Save changes");
+        saveChangesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                SubscriptionDAO subDao = new SubscriptionDAO(new DatabaseConnector());
+                try {
+                    int subID = Integer.parseInt(subsDropDown.getSelectedItem().toString());
+                    String subName = nameTextField.getText();
+                    String subStreet = streetTextField.getText();
+                    String houseNumber = houseNrTextField.getText();
+                    String city = cityTextField.getText();
+
+                    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        subDao.update(subName, subStreet, houseNumber, city, subID);
+                        System.out.println("Subscription information updated");
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // This button should delete the currently selected subscription from the database (and the application).
         deleteSubButton = new JButton("Delete");
