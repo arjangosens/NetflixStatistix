@@ -143,6 +143,23 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         // This button should delete the currently selected subscription from the database (and the application).
         deleteSubButton = new JButton("Delete");
+        deleteSubButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                SubscriptionDAO subDAO = new SubscriptionDAO(new DatabaseConnector());
+                try {
+                    // Get the selected Subscription ID
+                    int subID = Integer.parseInt(subsDropDown.getSelectedItem().toString());
+                    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        subDAO.delete(subID);
+                        System.out.println("Subscription deleted");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
 
