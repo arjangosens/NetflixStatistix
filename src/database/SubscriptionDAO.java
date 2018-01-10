@@ -172,7 +172,7 @@ public class SubscriptionDAO {
         }
     }
 
-    public void delete(Subscription subscription) {
+    public void delete(int subscriptionID) {
         Connection connection = null;
 
         try {
@@ -180,13 +180,14 @@ public class SubscriptionDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to search for Subscriptions
-            String query = "DELETE FROM Subscription WHERE subscriptionId = " + subscription.getSubscriptionId();
+            String query = "DELETE FROM Subscription WHERE subscriptionId = " + subscriptionID;
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
+            statement.execute(query);
 
             // Execute the query. After executing a Resultset will be stored in this variable
-            ResultSet resultSet = statement.executeQuery(query);
+//            ResultSet resultSet = statement.executeQuery(query);
 
         } catch (Exception e) {
             e.printStackTrace();
