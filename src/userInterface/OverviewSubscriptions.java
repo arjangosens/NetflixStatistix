@@ -8,9 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class OverviewSubscriptions extends JPanel implements Overview {
 
@@ -92,15 +90,26 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
                 // Create SubDao to enter data into database
                 SubscriptionDAO subDao = new SubscriptionDAO(new DatabaseConnector());
+                // The while loop is used to show the inputfields again in case of wrongly entered data
                 while (isRunning) {
-                    JOptionPane.showConfirmDialog(null, inputPanel, "Enter your information", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     try {
+                        // Show input fields to user where he can enter his subscription information
+                        int n = JOptionPane.showConfirmDialog(null, inputPanel, "Enter your information", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                        // If user presses cancel or exit button, close dialog
+                        if (n == JOptionPane.CANCEL_OPTION || n == JOptionPane.CLOSED_OPTION) {
+                            isRunning = false;
+                            break;
+                        }
+                        // Check if all fields have been filled in
                         if (subName.getText().length() > 0 && streetName.getText().length() > 0 && houseNumber.getText().length() > 0 && houseNumber.getText().length() <= 5 && city.getText().length() > 0) {
+                            // Call the insert() method, which inserts the data into the Subscription table in the database
                             subDao.insert(subName.getText(), streetName.getText(), houseNumber.getText(), city.getText());
                             isRunning = false;
-                        } else if (streetName.getText().length() > 5) {
+                            // Check if the entered houseNumber doesn't exceed the limit. If it does, show an error message
+                        } else if (houseNumber.getText().length() > 5) {
                             JOptionPane.showMessageDialog(inputPanel, "The housenumber can only be 5 characters long");
                         } else {
+                            // If the fields are empty, show an error message
                             JOptionPane.showMessageDialog(inputPanel, "These fields cannot be empty");
                         }
                     } catch (Exception e) {
