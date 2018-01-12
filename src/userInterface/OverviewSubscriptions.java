@@ -1,12 +1,12 @@
 package userInterface;
 
 import applicationLogic.Subscription;
+import applicationLogic.UserProfile;
 import database.DatabaseConnector;
 import database.SubscriptionDAO;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -23,10 +23,12 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     private JButton createNewSubButton;
     private JButton saveChangesButton;
     private JButton deleteSubButton;
+    private ArrayList<UserProfile> allUserProfiles;
     private String[] columnNames;
     private Object[][] data;
 
     public OverviewSubscriptions() {
+        allUserProfiles = Subscription.getAllUserProfiles();
         createTestData();
         createComponents();
     }
@@ -38,13 +40,31 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     private void createTestData() {
         columnNames = new String[]{
                 "Connected profiles",
+                "Age"
         };
+    }
 
-        data = new Object[][]{
-                {"Arjan"},
-                {"Sam"},
-                {"Niek"},
-        };
+    /**
+     * Load the table data with the connected UserProfiles
+     */
+    private void loadConnectedProfiles(int subId) {
+        ArrayList<UserProfile> connectedUserProfiles = new ArrayList<>();
+
+        for (UserProfile userProfile : allUserProfiles) {
+            if (subId == userProfile.getSubId()) {
+                connectedUserProfiles.add(userProfile);
+            }
+        }
+
+        data = new Object[connectedUserProfiles.size()][2];
+        for (int i = 0; i < connectedUserProfiles.size(); i++) {
+            Object[] y = new Object[2];
+
+            y[0] = connectedUserProfiles.get(i).getProfileName();
+            y[1] = connectedUserProfiles.get(i).getAge();
+
+            data[i] = y;
+        }
     }
 
     @Override
@@ -133,7 +153,19 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             }
         });
 
-        connectedProfilesJTable = new JTable(data, columnNames);
+        connectedProfilesJTable = new JTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel) connectedProfilesJTable.getModel();
+        loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+        defaultTableModel.setDataVector(data, columnNames);
+
+        subsDropDown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+                defaultTableModel.setDataVector(data, columnNames);
+            }
+        });
+
         JScrollPane jScrollPane = new JScrollPane(connectedProfilesJTable);
 
         JLabel nameLabel = new JLabel("Name:");
@@ -197,8 +229,6 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                 }
             }
         });
-
-
 
         this.add(subsDropDownLabel);
         this.add(subsDropDown);
