@@ -1,6 +1,7 @@
 package database;
 
 import applicationLogic.Subscription;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -27,6 +28,7 @@ public class SubscriptionDAO {
         try {
             // Create connection with database
             connection = databaseConnector.getConnection();
+            System.out.println("Connecting");
 
             // Form SQL query to search for Subscription
             String query = "SELECT * FROM Subscription WHERE subscriptionId = " + id;
@@ -102,7 +104,7 @@ public class SubscriptionDAO {
         return subscriptionSet;
     }
 
-    public void update(Subscription subscription) {
+    public void update(String nameSubscriber, String street, String houseNumber, String city, int id) {
         Connection connection = null;
 
         try {
@@ -110,46 +112,12 @@ public class SubscriptionDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to update Subscription
-            /**
-             *
-             * TODO: Write a correct query
-             */
-            String query = "ALTER TABLE Subscription WHERE subscriptionId = " + subscription.getSubscriptionId() + "; ALTER COLUMN nameSubscriber";
-
-            // Create statement used to execute the query
-            Statement statement = connection.createStatement();
-
-            // Execute the query. After executing a Resultset will be stored in this variable
-            ResultSet resultSet = statement.executeQuery(query);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void insert(Subscription subscription) {
-        Connection connection = null;
-
-        try {
-            // Create connection with database
-            connection = databaseConnector.getConnection();
-
-            // Form SQL query to search for Subscriptions
-            String query = String.format("INSERT INTO Subscription VALUES(%d, %s, %s, %s, %s)",
-                    subscription.getSubscriptionId(),
-                    subscription.getSubName(),
-                    subscription.getStreet(),
-                    subscription.getHouseNumber(),
-                    subscription.getCity());
+            String query = String.format("UPDATE Subscription SET nameSubscriber = %s, streetName = %s, houseNumber = %s, city = %s WHERE subscriptionId = %d)",
+                    nameSubscriber,
+                    street,
+                    houseNumber,
+                    city,
+                    id);
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
@@ -170,7 +138,7 @@ public class SubscriptionDAO {
         }
     }
 
-    public void delete(Subscription subscription) {
+    public void insert(String subName, String street, String houseNumber, String city) {
         Connection connection = null;
 
         try {
@@ -178,13 +146,48 @@ public class SubscriptionDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to search for Subscriptions
-            String query = "DELETE FROM Subscription WHERE subscriptionId = " + subscription.getSubscriptionId();
+            String query = String.format("INSERT INTO Subscription (nameSubscriber, streetName, houseNumber, city) VALUES('%s', '%s', '%s', '%s');",
+                    subName,
+                    street,
+                    houseNumber,
+                    city);
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
 
+            // Execute query
+            statement.executeUpdate(query);
+            System.out.println("Insert complete");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void delete(int subscriptionID) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to search for Subscriptions
+            String query = "DELETE FROM Subscription WHERE subscriptionId = " + subscriptionID;
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+
             // Execute the query. After executing a Resultset will be stored in this variable
-            ResultSet resultSet = statement.executeQuery(query);
+//            ResultSet resultSet = statement.executeQuery(query);
 
         } catch (Exception e) {
             e.printStackTrace();
