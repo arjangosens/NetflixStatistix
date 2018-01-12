@@ -3,12 +3,14 @@ package userInterface;
 import applicationLogic.Subscription;
 import database.DatabaseConnector;
 import database.SubscriptionDAO;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
 public class OverviewSubscriptions extends JPanel implements Overview {
 
@@ -54,12 +56,24 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         // Create DAO for getting all the registered subscriptions
         SubscriptionDAO getSubs = new SubscriptionDAO(new DatabaseConnector());
         // Create Set to store subscriptions
-        Set<Subscription> listOfSubs = new HashSet<Subscription>();
-        // Add all subscriptions found in the database
-        listOfSubs.addAll(getSubs.getAll());
-        // Loop through the set, put each found SubID in the dropdown menu
-        for (Subscription sub : listOfSubs) {
-            subsDropDown.addItem(sub.getSubscriptionId());
+        Set<Subscription> setOfSubs = new HashSet<Subscription>();
+        // Get all subscriptions from the database and add them to the set
+        setOfSubs.addAll(getSubs.getAll());
+
+        // Create Arraylist to store all subscription ID's from the setOfSubs
+        List<Integer> subIDs = new ArrayList<>();
+
+        // Loop through the setOfSubs and add all found subscriptionID's to the arrayList of subID's
+        for (Subscription sub : setOfSubs) {
+            subIDs.add(sub.getSubscriptionId());
+        }
+
+        // Sort all subID's from smallest to greatest
+        Collections.sort(subIDs);
+
+        // Loop through the arrayList of subID's, put each found SubID in the dropdown menu
+        for (Integer subID : subIDs) {
+            subsDropDown.addItem(subID);
         }
 
         // This button opens an input screen where users can make a new subscription
@@ -140,6 +154,29 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         // This button should save the input from the textfields above.
         saveChangesButton = new JButton("Save changes");
+        saveChangesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                SubscriptionDAO subDao = new SubscriptionDAO(new DatabaseConnector());
+                try {
+                    int subID = Integer.parseInt(subsDropDown.getSelectedItem().toString());
+                    String subName = nameTextField.getText();
+                    String subStreet = streetTextField.getText();
+                    String houseNumber = houseNrTextField.getText();
+                    String city = cityTextField.getText();
+
+                    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        subDao.update(subName, subStreet, houseNumber, city, subID);
+                        System.out.println("Subscription information updated");
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // This button should delete the currently selected subscription from the database (and the application).
         deleteSubButton = new JButton("Delete");
