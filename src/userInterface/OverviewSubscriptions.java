@@ -24,12 +24,14 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     private JButton saveChangesButton;
     private JButton deleteSubButton;
     private ArrayList<UserProfile> allUserProfiles;
+    private List<Subscription> allSubscriptions;
     private String[] columnNames;
     private Object[][] data;
 
     public OverviewSubscriptions() {
         allUserProfiles = Subscription.getAllUserProfiles();
-        createTestData();
+        allSubscriptions = Subscription.getAllSubscriptions();
+        createCulumnNames();
         createComponents();
     }
 
@@ -37,7 +39,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
      * Create the testData for the table.
      * TODO: Fill the profiles object variable in this function.
      */
-    private void createTestData() {
+    private void createCulumnNames() {
         columnNames = new String[]{
                 "Connected profiles",
                 "Age"
@@ -67,34 +69,37 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         }
     }
 
+    private void loadSubscriptionComboboxData() {
+        // We need to empty the comboBox, else some of the id's will be duplicated.
+        subsDropDown.removeAllItems();
+        // This array holds the id's for that will be viewed in the comboBox.
+        List<Integer> subscriptionIDs = new ArrayList<>();
+
+        // Now we update the allSubscriptions ArrayList.
+        allSubscriptions = Subscription.getAllSubscriptions();
+
+        // Loop through allSubscriptions to get the subscriptionId.
+        for (Subscription subscription : allSubscriptions) {
+            // Store the subscriptionId in the arrayList that holds this id's.
+            subscriptionIDs.add(subscription.getSubscriptionId());
+        }
+
+        // Sort the arrayList
+        Collections.sort(subscriptionIDs);
+
+        // And at last, add the id's to the comboBox.
+        for (Integer id : subscriptionIDs) {
+            subsDropDown.addItem(id);
+        }
+    }
+
     @Override
     public void createComponents() {
         JLabel subsDropDownLabel = new JLabel("Select subscription");
         subsDropDown = new JComboBox();
         subsDropDownLabel.setLabelFor(subsDropDown);
 
-        // Create DAO for getting all the registered subscriptions
-        SubscriptionDAO getSubs = new SubscriptionDAO(new DatabaseConnector());
-        // Create Set to store subscriptions
-        Set<Subscription> setOfSubs = new HashSet<Subscription>();
-        // Get all subscriptions from the database and add them to the set
-        setOfSubs.addAll(getSubs.getAll());
-
-        // Create Arraylist to store all subscription ID's from the setOfSubs
-        List<Integer> subIDs = new ArrayList<>();
-
-        // Loop through the setOfSubs and add all found subscriptionID's to the arrayList of subID's
-        for (Subscription sub : setOfSubs) {
-            subIDs.add(sub.getSubscriptionId());
-        }
-
-        // Sort all subID's from smallest to greatest
-        Collections.sort(subIDs);
-
-        // Loop through the arrayList of subID's, put each found SubID in the dropdown menu
-        for (Integer subID : subIDs) {
-            subsDropDown.addItem(subID);
-        }
+        loadSubscriptionComboboxData();
 
         // This button opens an input screen where users can make a new subscription
         createNewSubButton = new JButton("Create new subscription");
@@ -139,6 +144,10 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                             // Call the insert() method, which inserts the data into the Subscription table in the database
                             subDao.insert(subName.getText(), streetName.getText(), houseNumber.getText(), city.getText());
                             isRunning = false;
+
+                            // Update the comboBox.
+                            loadSubscriptionComboboxData();
+
                             // Check if the entered houseNumber doesn't exceed the limit. If it does, show an error message
                         } else if (houseNumber.getText().length() > 5) {
                             JOptionPane.showMessageDialog(inputPanel, "The housenumber can only be 5 characters long");
@@ -161,8 +170,10 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         subsDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                loadConnectedProfiles((int)subsDropDown.getSelectedItem());
-                defaultTableModel.setDataVector(data, columnNames);
+                if (subsDropDown.getSelectedItem() != null) {
+                    loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+                    defaultTableModel.setDataVector(data, columnNames);
+                }
             }
         });
 
@@ -223,6 +234,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                     if (confirm == JOptionPane.YES_OPTION) {
                         subDAO.delete(subID);
                         System.out.println("Subscription deleted");
+                        loadSubscriptionComboboxData();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
