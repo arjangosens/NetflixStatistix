@@ -13,6 +13,12 @@ public class ProfileDAO {
         this.databaseConnector = databaseConnector;
     }
 
+    /**
+     * Get a single Profile from the database
+     *
+     * @param profileID the id of the Profile that you would like to get
+     * @return UserProfile The profile that is found in the database by the id
+     */
     public UserProfile getProfile(int profileID) {
         UserProfile profile = null;
         Connection connection = null;
@@ -22,7 +28,7 @@ public class ProfileDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to search for Subscription
-            String query = "SELECT * FROM UserProfile WHERE profileName = " + profile.getProfileName();
+            String query = "SELECT * FROM UserProfile WHERE = profileId = " + profileID;
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
@@ -36,7 +42,7 @@ public class ProfileDAO {
                 String profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                profile = new UserProfile(profileName, age);
+                profile = new UserProfile(subId, profileName, age);
             }
 
         } catch (Exception e) {
