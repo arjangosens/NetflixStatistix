@@ -44,7 +44,7 @@ public class Subscription {
     }
 
     public void createProfile(String profileName, int age) {
-        UserProfile profile = new UserProfile(profileName, age);
+        UserProfile profile = new UserProfile(subscriptionId, profileName, age);
         profiles.add(profile);
     }
 }
