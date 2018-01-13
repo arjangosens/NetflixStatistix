@@ -64,8 +64,8 @@ public class SubscriptionDAO {
         return subscription;
     }
 
-    public Set getAll() {
-        Set<Subscription> subscriptionSet = new HashSet<Subscription>();
+    public ArrayList<Subscription> getAll() {
+        ArrayList<Subscription> subscriptionArrayList = new ArrayList<>();
 
         // Creates a new connection with the database
         Connection connection = databaseConnector.getConnection();
@@ -87,7 +87,7 @@ public class SubscriptionDAO {
                 String houseNumber = resultSet.getString("houseNumber");
                 String city = resultSet.getString("city");
 
-                subscriptionSet.add(new Subscription(subscriptionId, nameSubscriber, streetName, houseNumber, city));
+                subscriptionArrayList.add(new Subscription(subscriptionId, nameSubscriber, streetName, houseNumber, city));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,7 +100,7 @@ public class SubscriptionDAO {
                 }
             }
         }
-        return subscriptionSet;
+        return subscriptionArrayList;
     }
 
     public void update(String nameSubscriber, String street, String houseNumber, String city, int id) {
