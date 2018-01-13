@@ -28,7 +28,47 @@ public class ProfileDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to search for Subscription
-            String query = "SELECT * FROM UserProfile WHERE = profileId = " + profileID;
+            String query = "SELECT * FROM UserProfile WHERE profileId = " + profileID;
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+
+            // Execute the query. After executing a Resultset will be stored in this variable
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int profileId = resultSet.getInt("profileId");
+                int subId = resultSet.getInt("subId");
+                String profileName = resultSet.getString("profileName");
+                int age = resultSet.getInt("age");
+
+                profile = new UserProfile(subId, profileName, age);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return profile;
+    }
+
+    public UserProfile getProfile(int subscriptionId, String profileName) {
+        UserProfile profile = null;
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to search for Subscription
+            String query = "SELECT * FROM UserProfile WHERE subprofileName = + ;
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
