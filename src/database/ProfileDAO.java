@@ -169,7 +169,7 @@ public class ProfileDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to update Profile
-            String query = String.format("UPDATE Subscription SET profileName = %s, age = %d WHERE profileId = %d)",
+            String query = String.format("UPDATE UserProfile SET profileName = %s, age = %d WHERE profileId = %d)",
                     profileName,
                     age,
                     profileId);
@@ -202,7 +202,7 @@ public class ProfileDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to insert Profile
-            String query = String.format("INSERT INTO Subscription (subId, profileName, age) VALUES('%d', '%s', '%d');",
+            String query = String.format("INSERT INTO UserProfile (subId, profileName, age) VALUES('%d', '%s', '%d');",
                     subId,
                     profileName,
                     age);
@@ -213,6 +213,42 @@ public class ProfileDAO {
             // Execute query
             statement.executeUpdate(query);
             System.out.println("Insert complete");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Delete an existing profile from the database
+     *
+     * @param profileId The profileId of the profile that will be deleted
+     */
+    public void delete(int profileId) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to delete profile
+            String query = "DELETE FROM userProfile WHERE profileId = " + profileId;
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+
+            // Execute the query. After executing a Resultset will be stored in this variable
+            statement.executeQuery(query);
+            System.out.println("Profile successfully deleted");
 
         } catch (Exception e) {
             e.printStackTrace();
