@@ -1,10 +1,12 @@
 package userInterface;
 
 import applicationLogic.Subscription;
+import applicationLogic.UserProfile;
 import database.DatabaseConnector;
 import database.SubscriptionDAO;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -21,11 +23,15 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     private JButton createNewSubButton;
     private JButton saveChangesButton;
     private JButton deleteSubButton;
+    private ArrayList<UserProfile> allUserProfiles;
+    private List<Subscription> allSubscriptions;
     private String[] columnNames;
     private Object[][] data;
 
     public OverviewSubscriptions() {
-        createTestData();
+        allUserProfiles = Subscription.getAllUserProfiles();
+        allSubscriptions = Subscription.getAllSubscriptions();
+        createCulumnNames();
         createComponents();
     }
 
@@ -33,16 +39,58 @@ public class OverviewSubscriptions extends JPanel implements Overview {
      * Create the testData for the table.
      * TODO: Fill the profiles object variable in this function.
      */
-    private void createTestData() {
+    private void createCulumnNames() {
         columnNames = new String[]{
                 "Connected profiles",
+                "Age"
         };
+    }
 
-        data = new Object[][]{
-                {"Arjan"},
-                {"Sam"},
-                {"Niek"},
-        };
+    /**
+     * Load the table data with the connected UserProfiles
+     */
+    private void loadConnectedProfiles(int subId) {
+        ArrayList<UserProfile> connectedUserProfiles = new ArrayList<>();
+
+        for (UserProfile userProfile : allUserProfiles) {
+            if (subId == userProfile.getSubId()) {
+                connectedUserProfiles.add(userProfile);
+            }
+        }
+
+        data = new Object[connectedUserProfiles.size()][2];
+        for (int i = 0; i < connectedUserProfiles.size(); i++) {
+            Object[] y = new Object[2];
+
+            y[0] = connectedUserProfiles.get(i).getProfileName();
+            y[1] = connectedUserProfiles.get(i).getAge();
+
+            data[i] = y;
+        }
+    }
+
+    private void loadSubscriptionComboboxData() {
+        // We need to empty the comboBox, else some of the id's will be duplicated.
+        subsDropDown.removeAllItems();
+        // This array holds the id's for that will be viewed in the comboBox.
+        List<Integer> subscriptionIDs = new ArrayList<>();
+
+        // Now we update the allSubscriptions ArrayList.
+        allSubscriptions = Subscription.getAllSubscriptions();
+
+        // Loop through allSubscriptions to get the subscriptionId.
+        for (Subscription subscription : allSubscriptions) {
+            // Store the subscriptionId in the arrayList that holds this id's.
+            subscriptionIDs.add(subscription.getSubscriptionId());
+        }
+
+        // Sort the arrayList
+        Collections.sort(subscriptionIDs);
+
+        // And at last, add the id's to the comboBox.
+        for (Integer id : subscriptionIDs) {
+            subsDropDown.addItem(id);
+        }
     }
 
     @Override
@@ -51,28 +99,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         subsDropDown = new JComboBox();
         subsDropDownLabel.setLabelFor(subsDropDown);
 
-        // Create DAO for getting all the registered subscriptions
-        SubscriptionDAO getSubs = new SubscriptionDAO(new DatabaseConnector());
-        // Create Set to store subscriptions
-        Set<Subscription> setOfSubs = new HashSet<Subscription>();
-        // Get all subscriptions from the database and add them to the set
-        setOfSubs.addAll(getSubs.getAll());
-
-        // Create Arraylist to store all subscription ID's from the setOfSubs
-        List<Integer> subIDs = new ArrayList<>();
-
-        // Loop through the setOfSubs and add all found subscriptionID's to the arrayList of subID's
-        for (Subscription sub : setOfSubs) {
-            subIDs.add(sub.getSubscriptionId());
-        }
-
-        // Sort all subID's from smallest to greatest
-        Collections.sort(subIDs);
-
-        // Loop through the arrayList of subID's, put each found SubID in the dropdown menu
-        for (Integer subID : subIDs) {
-            subsDropDown.addItem(subID);
-        }
+        loadSubscriptionComboboxData();
 
         // This button opens an input screen where users can make a new subscription
         createNewSubButton = new JButton("Create new subscription");
@@ -117,6 +144,10 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                             // Call the insert() method, which inserts the data into the Subscription table in the database
                             subDao.insert(subName.getText(), streetName.getText(), houseNumber.getText(), city.getText());
                             isRunning = false;
+
+                            // Update the comboBox.
+                            loadSubscriptionComboboxData();
+
                             // Check if the entered houseNumber doesn't exceed the limit. If it does, show an error message
                         } else if (houseNumber.getText().length() > 5) {
                             JOptionPane.showMessageDialog(inputPanel, "The housenumber can only be 5 characters long");
@@ -131,7 +162,21 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             }
         });
 
-        connectedProfilesJTable = new JTable(data, columnNames);
+        connectedProfilesJTable = new JTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel) connectedProfilesJTable.getModel();
+        loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+        defaultTableModel.setDataVector(data, columnNames);
+
+        subsDropDown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (subsDropDown.getSelectedItem() != null) {
+                    loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+                    defaultTableModel.setDataVector(data, columnNames);
+                }
+            }
+        });
+
         JScrollPane jScrollPane = new JScrollPane(connectedProfilesJTable);
 
         JLabel nameLabel = new JLabel("Name:");
@@ -189,14 +234,13 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                     if (confirm == JOptionPane.YES_OPTION) {
                         subDAO.delete(subID);
                         System.out.println("Subscription deleted");
+                        loadSubscriptionComboboxData();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
-
 
         this.add(subsDropDownLabel);
         this.add(subsDropDown);
