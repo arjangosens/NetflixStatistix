@@ -29,7 +29,7 @@ public class ProfileDAO {
             // Create connection with database
             connection = databaseConnector.getConnection();
 
-            // Form SQL query to search for Subscription
+            // Form SQL query to search for Profile
             String query = "SELECT * FROM UserProfile WHERE profileId = " + profileID;
 
             // Create statement used to execute the query
@@ -76,7 +76,7 @@ public class ProfileDAO {
             // Create connection with database
             connection = databaseConnector.getConnection();
 
-            // Form SQL query to search for Subscription
+            // Form SQL query to search for Profile
             String query = "SELECT * FROM UserProfile WHERE subId = " + subscriptionId + " AND profileName = " + profileName;
 
             // Create statement used to execute the query
@@ -122,7 +122,7 @@ public class ProfileDAO {
             // Create connection with database
             connection = databaseConnector.getConnection();
 
-            // Form SQL query to search for Subscription
+            // Form SQL query to search for Profiles
             String query = "SELECT * FROM UserProfile WHERE subId = " + subscriptionId;
 
             // Create statement used to execute the query
@@ -152,5 +152,44 @@ public class ProfileDAO {
             }
         }
         return userProfileSet;
+    }
+
+    /**
+     * Update an existing profile in the database
+     *
+     * @param profileName The new name of the profile
+     * @param age The new age of the profile
+     * @param profileId The current Id of the profile
+     */
+    public void update(String profileName, int age, int profileId) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to update Profile
+            String query = String.format("UPDATE Subscription SET profileName = %s, age = %d WHERE profileId = %d)",
+                    profileName,
+                    age,
+                    profileId);
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+
+            // Execute the query. After executing a Resultset will be stored in this variable
+            ResultSet resultSet = statement.executeQuery(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
