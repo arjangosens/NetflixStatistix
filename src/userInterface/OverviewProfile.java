@@ -2,6 +2,7 @@ package userInterface;
 
 import applicationLogic.Subscription;
 import applicationLogic.UserProfile;
+import database.DatabaseConnector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,7 @@ public class OverviewProfile extends JPanel implements Overview {
     private ArrayList<Subscription> allSubscriptions;
     private JComboBox profileDropDown;
     private ArrayList<UserProfile> allUserProfiles;
-    private JTable episodesTable;
+    private JTable viewBehaviourTable;
     private JTextField nameTextField;
     private JTextField ageTextField;
     private JButton createNewProfileButton;
@@ -38,8 +39,12 @@ public class OverviewProfile extends JPanel implements Overview {
      */
     private void createTestData() {
         columnNames = new String[]{
-                "Watched programs",
-                "",
+                "EpisodeNumber",
+                "Title",
+                "Genre",
+                "Language",
+                "Age",
+                "Duration"
         };
 
         data = new Object[][]{
@@ -197,10 +202,10 @@ public class OverviewProfile extends JPanel implements Overview {
             }
         });
 
-        episodesTable = new JTable();
-        DefaultTableModel defaultTableModel = (DefaultTableModel) episodesTable.getModel();
+        viewBehaviourTable = new JTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel) viewBehaviourTable.getModel();
         defaultTableModel.setDataVector(data, columnNames);
-        JScrollPane jScrollPane = new JScrollPane(episodesTable);
+        JScrollPane jScrollPane = new JScrollPane(viewBehaviourTable);
 
         JLabel nameLabel = new JLabel("Name:");
         nameTextField = new JTextField("[NAME]", 10);
