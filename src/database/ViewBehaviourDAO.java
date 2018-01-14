@@ -160,7 +160,7 @@ public class ViewBehaviourDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to insert Profile
-            String query = String.format("INSERT INTO UserProfile (profileId, programId, progressPerct) VALUES('%d', '%d', '%f');",
+            String query = String.format("INSERT INTO ViewBehaviour (profileId, programId, progressPerct) VALUES('%d', '%d', '%f');",
                     profileId,
                     programId,
                     progressPerct);
@@ -171,6 +171,42 @@ public class ViewBehaviourDAO {
             // Execute query
             statement.executeUpdate(query);
             System.out.println("Insert complete");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Delete an existing ViewBehaviour from the database
+     *
+     * @param viewBehaviourId The viewBehaviourId of the ViewBehaviour that needs deletion
+     */
+    public void delete(int viewBehaviourId) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to delete ViewBehaviour
+            String query = "DELETE FROM ViewBehaviour WHERE profileId = " + viewBehaviourId;
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+
+            // Execute the query. After executing a Resultset will be stored in this variable
+            statement.executeQuery(query);
+            System.out.println("ViewBehaviour successfully deleted");
 
         } catch (Exception e) {
             e.printStackTrace();
