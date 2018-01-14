@@ -14,10 +14,7 @@ public class ViewBehaviour {
     }
 
     private void add(Program program, double progressPerct) {
-        // Check if program already exists in program hashmap
-        if (!programs.containsKey(program)) {
             programs.put(program, progressPerct);
-        }
     }
 
     private void remove(Program program) {
