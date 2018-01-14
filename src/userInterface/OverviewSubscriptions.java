@@ -7,10 +7,13 @@ import database.SubscriptionDAO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class OverviewSubscriptions extends JPanel implements Overview {
 
@@ -95,9 +98,26 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
     @Override
     public void createComponents() {
-        JLabel subsDropDownLabel = new JLabel("Select subscription");
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        JLabel subsDropDownLabel = new JLabel("Select subscription ");
         subsDropDown = new JComboBox();
         subsDropDownLabel.setLabelFor(subsDropDown);
+
+        constraints.insets = new Insets(0, 0, 5, 20);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(subsDropDownLabel, constraints);
+
+        constraints.insets = new Insets(0, 0, 5, 10);
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(subsDropDown, constraints);
 
         loadSubscriptionComboboxData();
 
@@ -162,6 +182,13 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             }
         });
 
+        constraints.insets = new Insets(0, 0, 5, 1);
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(createNewSubButton, constraints);
+
         connectedProfilesJTable = new JTable();
         DefaultTableModel defaultTableModel = (DefaultTableModel) connectedProfilesJTable.getModel();
         loadConnectedProfiles((int)subsDropDown.getSelectedItem());
@@ -179,21 +206,85 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         JScrollPane jScrollPane = new JScrollPane(connectedProfilesJTable);
 
+        constraints.insets = new Insets(0,0,10,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 4;
+        this.add(jScrollPane, constraints);
+
+
         JLabel nameLabel = new JLabel("Name:");
         nameTextField = new JTextField("[NAME]", 10);
         nameLabel.setLabelFor(nameTextField);
+
+        constraints.insets = new Insets(0,0,0,80);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(nameLabel, constraints);
+
+        constraints.insets = new Insets(0,80,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(nameTextField, constraints);
 
         JLabel streetLabel = new JLabel("Street:");
         streetTextField = new JTextField("[STREET]", 10);
         streetLabel.setLabelFor(streetTextField);
 
+        constraints.insets = new Insets(0,0,0,80);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(streetLabel, constraints);
+
+        constraints.insets = new Insets(0,80,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(streetTextField, constraints);
+
         JLabel houseNrLabel = new JLabel("House Nr:");
         houseNrTextField = new JTextField("[NR]", 3);
         houseNrLabel.setLabelFor(houseNrTextField);
 
+        constraints.insets = new Insets(0,0,0,60);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(houseNrLabel, constraints);
+
+        constraints.insets = new Insets(0,60,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(houseNrTextField, constraints);
+
         JLabel cityLabel = new JLabel("City:");
         cityTextField = new JTextField("[CITY]", 10);
         cityLabel.setLabelFor(cityTextField);
+
+        constraints.insets = new Insets(0,0,0,75);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 3;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(cityLabel, constraints);
+
+        constraints.insets = new Insets(0,75,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 3;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(cityTextField, constraints);
 
         // This button should save the input from the textfields above.
         saveChangesButton = new JButton("Save changes");
@@ -221,6 +312,13 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             }
         });
 
+        constraints.insets = new Insets(10,0,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        constraints.gridwidth = 1;
+        this.add(saveChangesButton, constraints);
+
         // This button should delete the currently selected subscription from the database (and the application).
         deleteSubButton = new JButton("Delete");
         deleteSubButton.addActionListener(new ActionListener() {
@@ -242,26 +340,12 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             }
         });
 
-        this.add(subsDropDownLabel);
-        this.add(subsDropDown);
+        constraints.insets = new Insets(10,0,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 2;
+        constraints.gridy = 3;
+        constraints.gridwidth = 1;
+        this.add(deleteSubButton, constraints);
 
-        this.add(createNewSubButton);
-
-        this.add(jScrollPane);
-
-        this.add(nameLabel);
-        this.add(nameTextField);
-
-        this.add(streetLabel);
-        this.add(streetTextField);
-
-        this.add(houseNrLabel);
-        this.add(houseNrTextField);
-
-        this.add(cityLabel);
-        this.add(cityTextField);
-
-        this.add(saveChangesButton);
-        this.add(deleteSubButton);
     }
 }
