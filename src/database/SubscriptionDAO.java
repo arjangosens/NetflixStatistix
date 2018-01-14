@@ -1,10 +1,12 @@
 package database;
 
 import applicationLogic.Subscription;
+import applicationLogic.UserProfile;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,13 +25,11 @@ public class SubscriptionDAO {
      */
     public Subscription getSubscription(int id) {
         Subscription subscription = null;
-        Connection connection = null;
+
+        // Create connection with database
+        Connection connection = databaseConnector.getConnection();
 
         try {
-            // Create connection with database
-            connection = databaseConnector.getConnection();
-            System.out.println("Connecting");
-
             // Form SQL query to search for Subscription
             String query = "SELECT * FROM Subscription WHERE subscriptionId = " + id;
 
@@ -64,14 +64,13 @@ public class SubscriptionDAO {
         return subscription;
     }
 
-    public Set getAll() {
-        Set<Subscription> subscriptionSet = new HashSet<Subscription>();
-        Connection connection = null;
+    public ArrayList<Subscription> getAll() {
+        ArrayList<Subscription> subscriptionArrayList = new ArrayList<>();
+
+        // Creates a new connection with the database
+        Connection connection = databaseConnector.getConnection();
 
         try {
-            // Create connection with database
-            connection = databaseConnector.getConnection();
-
             // Form SQL query to search for Subscriptions
             String query = "SELECT * FROM Subscription";
 
@@ -88,7 +87,7 @@ public class SubscriptionDAO {
                 String houseNumber = resultSet.getString("houseNumber");
                 String city = resultSet.getString("city");
 
-                subscriptionSet.add(new Subscription(subscriptionId, nameSubscriber, streetName, houseNumber, city));
+                subscriptionArrayList.add(new Subscription(subscriptionId, nameSubscriber, streetName, houseNumber, city));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,18 +100,16 @@ public class SubscriptionDAO {
                 }
             }
         }
-        return subscriptionSet;
+        return subscriptionArrayList;
     }
 
     public void update(String nameSubscriber, String street, String houseNumber, String city, int id) {
-        Connection connection = null;
+        // Creates a new connection with the database
+        Connection connection = databaseConnector.getConnection();
 
         try {
-            // Create connection with database
-            connection = databaseConnector.getConnection();
-
             // Form SQL query to update Subscription
-            String query = String.format("UPDATE Subscription SET nameSubscriber = %s, streetName = %s, houseNumber = %s, city = %s WHERE subscriptionId = %d)",
+            String query = String.format("UPDATE Subscription SET nameSubscriber = '%s', streetName = '%s', houseNumber = '%s', city = '%s' WHERE subscriptionId = %d;",
                     nameSubscriber,
                     street,
                     houseNumber,
@@ -121,9 +118,7 @@ public class SubscriptionDAO {
 
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
-
-            // Execute the query. After executing a Resultset will be stored in this variable
-            ResultSet resultSet = statement.executeQuery(query);
+            statement.executeUpdate(query);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,13 +133,19 @@ public class SubscriptionDAO {
         }
     }
 
+    /**
+     * This method inserts a new subscription into the database.
+     * All these variables are needed if we would like to do that.
+     * @param subName The name of the subscription (The name of the user that buys a subscription)
+     * @param street The street name of the user that buys a subscription
+     * @param houseNumber The houseNumber of the user that buys a subscription
+     * @param city And last but not least, the city where the user lives
+     */
     public void insert(String subName, String street, String houseNumber, String city) {
-        Connection connection = null;
+        // Create connection with database
+        Connection connection = databaseConnector.getConnection();
 
         try {
-            // Create connection with database
-            connection = databaseConnector.getConnection();
-
             // Form SQL query to search for Subscriptions
             String query = String.format("INSERT INTO Subscription (nameSubscriber, streetName, houseNumber, city) VALUES('%s', '%s', '%s', '%s');",
                     subName,
@@ -172,13 +173,15 @@ public class SubscriptionDAO {
         }
     }
 
+    /**
+     * Delete a single subscription
+     * @param subscriptionID The subscriptionID is given, else this method does not know what to delete...
+     */
     public void delete(int subscriptionID) {
-        Connection connection = null;
+        // Create a new connection
+        Connection connection = databaseConnector.getConnection();
 
         try {
-            // Create connection with database
-            connection = databaseConnector.getConnection();
-
             // Form SQL query to search for Subscriptions
             String query = "DELETE FROM Subscription WHERE subscriptionId = " + subscriptionID;
 
@@ -200,6 +203,46 @@ public class SubscriptionDAO {
                 }
             }
         }
+    }
+
+    public ArrayList<UserProfile> getAllUserProfiles() {
+        // Create a new connection with the database
+        Connection connection = databaseConnector.getConnection();
+
+        ArrayList<UserProfile> userProfiles = new ArrayList<>();
+
+        try {
+            // Create the SQL query
+            String query = "SELECT subscriptionId, profileName, age\n" +
+                    "FROM Subscription\n" +
+                    "\tJOIN UserProfile ON Subscription.subscriptionId = UserProfile.subId\n";
+
+            // Create a statement. Without a statement we can not execute the query
+            Statement statement = connection.createStatement();
+
+            // Create a resultSet. Without a resultSet we would nog be able to view the content that we just selected
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int subId = resultSet.getInt("subscriptionId");
+                String profileName = resultSet.getString("profileName");
+                int age = resultSet.getInt("age");
+
+                userProfiles.add(new UserProfile(subId, profileName, age));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return userProfiles;
     }
 
 }

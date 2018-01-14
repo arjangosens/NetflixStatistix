@@ -1,7 +1,7 @@
 package applicationLogic;
 
 public class UserProfile {
-    private int subscriptionId;
+    private int subId;
     private String profileName;
     private int age;
     private ViewBehaviour viewBehaviour;
@@ -13,8 +13,15 @@ public class UserProfile {
         this.viewBehaviour = new ViewBehaviour();
     }
 
-    public int getSubscriptionId() {
-        return subscriptionId;
+    public UserProfile(int subId, String profileName, int age) {
+        this.subId = subId;
+        this.profileName = profileName;
+        this.age = age;
+        this.viewBehaviour = new ViewBehaviour();
+    }
+
+    public int getSubId() {
+        return subId;
     }
 
     public String getProfileName() {
