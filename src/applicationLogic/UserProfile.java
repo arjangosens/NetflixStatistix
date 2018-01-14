@@ -1,5 +1,10 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.ProfileDAO;
+
+import java.util.ArrayList;
+
 public class UserProfile {
     private int subId;
     private String profileName;
@@ -34,5 +39,10 @@ public class UserProfile {
 
     public ViewBehaviour getViewBehaviour() {
         return viewBehaviour;
+    }
+
+    public static ArrayList<UserProfile> getUserProfilesBySubscriptionId(int subId) {
+        ProfileDAO profileDAO = new ProfileDAO(new DatabaseConnector());
+        return profileDAO.getProfilesOfSubscription(subId);
     }
 }
