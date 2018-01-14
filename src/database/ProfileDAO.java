@@ -45,7 +45,7 @@ public class ProfileDAO {
                 String profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                profile = new UserProfile(subId, profileName, age);
+                profile = new UserProfile(subId, profileId, profileName, age);
             }
 
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class ProfileDAO {
                 profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                profile = new UserProfile(subId, profileName, age);
+                profile = new UserProfile(subId, profileId, profileName, age);
             }
 
         } catch (Exception e) {
@@ -138,7 +138,7 @@ public class ProfileDAO {
                 String profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                userProfileSet.add(new UserProfile(subId, profileName, age));
+                userProfileSet.add(new UserProfile(subId, profileId, profileName, age));
             }
 
         } catch (Exception e) {
