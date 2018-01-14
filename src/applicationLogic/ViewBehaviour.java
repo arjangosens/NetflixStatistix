@@ -1,26 +1,47 @@
 package applicationLogic;
 
-import java.util.HashMap;
-
 public class ViewBehaviour {
-    private HashMap<Program, Double> programs;
+    private int viewBehaviourId;
+    private int profileId;
+    private int programId;
+    private double progressPerct;
 
-    public ViewBehaviour() {
-        this.programs = new HashMap<Program, Double>();
+    public ViewBehaviour(int viewBehaviourId, int profileId, int programId, double progressPerct) {
+        this.viewBehaviourId = viewBehaviourId;
+        this.profileId = profileId;
+        this.programId = programId;
+        this.progressPerct = progressPerct;
     }
 
-    public HashMap<Program, Double> getPrograms() {
-        return programs;
+    public int getViewBehaviourId() {
+        return viewBehaviourId;
     }
 
-    private void add(Program program, double progressPerct) {
-        // Check if program already exists in program hashmap
-        if (!programs.containsKey(program)) {
-            programs.put(program, progressPerct);
-        }
+    public void setViewBehaviourId(int viewBehaviourId) {
+        this.viewBehaviourId = viewBehaviourId;
     }
 
-    private void remove(Program program) {
-        programs.remove(program);
+    public int getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
+    }
+
+    public int getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(int programId) {
+        this.programId = programId;
+    }
+
+    public double getProgressPerct() {
+        return progressPerct;
+    }
+
+    public void setProgressPerct(double progressPerct) {
+        this.progressPerct = progressPerct;
     }
 }
