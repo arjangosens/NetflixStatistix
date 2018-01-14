@@ -5,6 +5,7 @@ import database.DatabaseConnector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
@@ -144,9 +145,14 @@ public class OverviewProfile extends JPanel implements Overview {
 
     @Override
     public void createComponents() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
         JLabel subscriptionDropDownLabel = new JLabel("Select Subscription:");
         subscriptionDropDown = new JComboBox();
         subscriptionDropDownLabel.setLabelFor(subscriptionDropDown);
+
+
 
         // Fill the subscriptionDropDown with id's
         loadSubscriptionDropDown();
@@ -330,23 +336,90 @@ public class OverviewProfile extends JPanel implements Overview {
 //            }
 //        });
 
-        this.add(subscriptionDropDownLabel);
-        this.add(subscriptionDropDown);
 
-        this.add(profileDropDownLabel);
-        this.add(profileDropDown);
+        constraints.insets = new Insets(0,0,0,80);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(subscriptionDropDownLabel, constraints);
 
-        this.add(createNewProfileButton);
+        constraints.insets = new Insets(0,80,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(subscriptionDropDown, constraints);
 
-        this.add(jScrollPane);
+        constraints.insets = new Insets(0,0,0,80);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(profileDropDownLabel, constraints);
 
-        this.add(nameLabel);
-        this.add(nameTextField);
-        this.add(ageLabel);
-        this.add(ageTextField);
+        constraints.insets = new Insets(0,80,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(profileDropDown, constraints);
 
-        this.add(saveChangesButton);
-        this.add(deleteProfileButton);
+        constraints.insets = new Insets(0,0,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        this.add(createNewProfileButton, constraints);
+
+        constraints.insets = new Insets(10,0,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        constraints.gridwidth = 4;
+        this.add(jScrollPane, constraints);
+
+        constraints.insets = new Insets(10,0,0,80);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 1;
+        this.add(nameLabel, constraints);
+
+        constraints.insets = new Insets(10,80,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 1;
+        this.add(nameTextField, constraints);
+
+        constraints.insets = new Insets(10,0,0,80);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        constraints.gridwidth = 1;
+        this.add(ageLabel, constraints);
+
+        constraints.insets = new Insets(10,80,0,0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        constraints.gridwidth = 1;
+        this.add(ageTextField, constraints);
+
+        constraints.insets = new Insets(10,0,0,0);
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        constraints.gridwidth = 1;
+        this.add(saveChangesButton, constraints);
+
+        constraints.insets = new Insets(10,0,0,0);
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        constraints.gridwidth = 1;
+        this.add(deleteProfileButton, constraints);
     }
 }
 
