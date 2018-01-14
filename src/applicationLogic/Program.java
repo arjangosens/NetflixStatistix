@@ -1,5 +1,8 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.ProgramDAO;
+
 public abstract class Program {
 
     private int programId;
@@ -22,5 +25,10 @@ public abstract class Program {
 
     public double getDuration() {
         return duration;
+    }
+
+    public static Program getProgramById(int programId) {
+        ProgramDAO programDAO = new ProgramDAO(new DatabaseConnector());
+        return programDAO.getProgramById(programId);
     }
 }
