@@ -206,7 +206,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         JScrollPane jScrollPane = new JScrollPane(connectedProfilesJTable);
 
-        constraints.insets = new Insets(0,0,0,0);
+        constraints.insets = new Insets(0,0,10,0);
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.gridx = 0;
         constraints.gridy = 1;
