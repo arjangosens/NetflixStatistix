@@ -106,4 +106,42 @@ public class ViewBehaviourDAO {
         }
         return viewBehaviourSet;
     }
+
+    /**
+     * Update an existing ViewBehaviour in the database1
+     *
+     * @param profileId The current profileId
+     * @param progressPerct The new progressPerct
+     */
+    public void update(int profileId, double progressPerct) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to update ViewBehaviour
+            String query = String.format("UPDATE ViewBehaviour SET progressPerct = %f WHERE profileId = %d)",
+                    progressPerct,
+                    profileId);
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+
+            // Execute query
+            statement.executeQuery(query);
+            System.out.println("Update complete");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
