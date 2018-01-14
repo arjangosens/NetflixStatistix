@@ -187,8 +187,8 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             public void actionPerformed(ActionEvent e) {
                 if (subsDropDown.getSelectedItem() != null) {
                     loadConnectedProfiles((int)subsDropDown.getSelectedItem());
-                    defaultTableModel.setDataVector(data, columnNames);
                     loadSubscriberInfo((int)subsDropDown.getSelectedItem());
+                    defaultTableModel.setDataVector(data, columnNames);
                 }
             }
         });
@@ -213,7 +213,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         loadSubscriberInfo((int)subsDropDown.getSelectedItem());
 
-        // This button should save the input from the textfields above.
+        // This button saves the input from the textfields above if the text is changed.
         saveChangesButton = new JButton("Save changes");
         saveChangesButton.addActionListener(new ActionListener() {
             @Override
