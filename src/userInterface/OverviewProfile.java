@@ -2,7 +2,6 @@ package userInterface;
 
 import applicationLogic.Subscription;
 import applicationLogic.UserProfile;
-import database.DatabaseConnector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +17,8 @@ public class OverviewProfile extends JPanel implements Overview {
     private ArrayList<Subscription> allSubscriptions;
     private JComboBox profileDropDown;
     private ArrayList<UserProfile> allUserProfiles;
-    private JTable viewBehaviourTable;
+    private JTable episodesTable;
+    private JTable filmsTable;
     private JTextField nameTextField;
     private JTextField ageTextField;
     private JButton createNewProfileButton;
@@ -26,6 +26,8 @@ public class OverviewProfile extends JPanel implements Overview {
     private JButton deleteProfileButton;
     private String[] columnNames;
     private Object[][] data;
+    private String[] filmsColumns;
+    private Object[][] filmsData;
 
     public OverviewProfile() {
         allSubscriptions = Subscription.getAllSubscriptions();
@@ -198,11 +200,15 @@ public class OverviewProfile extends JPanel implements Overview {
             }
         });
 
-//        viewBehaviourTable = new JTable(data, columnNames);
-        viewBehaviourTable = new JTable();
-        DefaultTableModel defaultTableModel = (DefaultTableModel) viewBehaviourTable.getModel();
+        episodesTable = new JTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel) episodesTable.getModel();
         defaultTableModel.setDataVector(data, columnNames);
-        JScrollPane jScrollPane = new JScrollPane(viewBehaviourTable);
+        JScrollPane jScrollPane = new JScrollPane(episodesTable);
+
+        filmsTable = new JTable();
+        DefaultTableModel filmsTableModel = (DefaultTableModel) filmsTable.getModel();
+        defaultTableModel.setDataVector(filmsData, filmsColumns);
+        JScrollPane filmsScrollPane = new JScrollPane(filmsTable);
 
         JLabel nameLabel = new JLabel("Name:");
         nameTextField = new JTextField("[NAME]", 10);
@@ -276,6 +282,8 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(createNewProfileButton);
 
         this.add(jScrollPane);
+
+        this.add(filmsScrollPane);
 
         this.add(nameLabel);
         this.add(nameTextField);
