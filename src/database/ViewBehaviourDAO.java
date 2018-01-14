@@ -144,4 +144,44 @@ public class ViewBehaviourDAO {
             }
         }
     }
+
+    /**
+     * Insert a ViewBehavior into the database
+     *
+     * @param profileId The profileId of the new ViewBehaviour
+     * @param programId The programId of the new ViewBehaviour
+     * @param progressPerct The progressPerct of the new ViewBehaviour
+     */
+    public void insert(int profileId, int programId, double progressPerct) {
+        Connection connection = null;
+
+        try {
+            // Create connection with database
+            connection = databaseConnector.getConnection();
+
+            // Form SQL query to insert Profile
+            String query = String.format("INSERT INTO UserProfile (profileId, programId, progressPerct) VALUES('%d', '%d', '%f');",
+                    profileId,
+                    programId,
+                    progressPerct);
+
+            // Create statement used to execute the query
+            Statement statement = connection.createStatement();
+
+            // Execute query
+            statement.executeUpdate(query);
+            System.out.println("Insert complete");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
