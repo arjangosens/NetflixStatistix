@@ -1,9 +1,11 @@
 package userInterface;
 
 import applicationLogic.Subscription;
+import applicationLogic.UserProfile;
 import database.DatabaseConnector;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class OverviewProfile extends JPanel implements Overview {
     private JComboBox subscriptionDropDown;
     private ArrayList<Subscription> allSubscriptions;
     private JComboBox profileDropDown;
+    private ArrayList<UserProfile> allUserProfiles;
     private JTable viewBehaviourTable;
     private JTextField nameTextField;
     private JTextField ageTextField;
@@ -47,6 +50,9 @@ public class OverviewProfile extends JPanel implements Overview {
         };
     }
 
+    /**
+     * Load the data that is viewed in the subscriptionDropDown JComboBox
+     */
     private void loadSubscriptionDropDown() {
         // This array holds the id's for that will be viewed in the comboBox.
         List<Integer> subscriptionIDs = new ArrayList<>();
@@ -69,6 +75,24 @@ public class OverviewProfile extends JPanel implements Overview {
         }
     }
 
+    /**
+     * Load the data that is viewed in the profileDropDown JComboBox.
+     */
+    private void loadProfileDropDown() {
+        List<String> profileNames = new ArrayList<>();
+        profileDropDown.removeAllItems();
+
+        allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+
+        for (UserProfile userProfile : allUserProfiles) {
+            profileNames.add(userProfile.getProfileName());
+        }
+
+        for (String profileName : profileNames) {
+            profileDropDown.addItem(profileName);
+        }
+    }
+
     @Override
     public void createComponents() {
         JLabel subscriptionDropDownLabel = new JLabel("Select Subscription:");
@@ -78,9 +102,19 @@ public class OverviewProfile extends JPanel implements Overview {
         // Fill the subscriptionDropDown with id's
         loadSubscriptionDropDown();
 
+        subscriptionDropDown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadProfileDropDown();
+            }
+        });
+
         JLabel profileDropDownLabel = new JLabel("Select Profile:");
         profileDropDown = new JComboBox();
         profileDropDownLabel.setLabelFor(profileDropDown);
+
+        // Fill the profileDropDown with profileNames based on the subscriptionDropDown id
+        loadProfileDropDown();
 
         /**
          * TODO: Create DAO for profiles and convert the commented out code to fit profiles instead of subscriptions
@@ -166,6 +200,8 @@ public class OverviewProfile extends JPanel implements Overview {
 
 //        viewBehaviourTable = new JTable(data, columnNames);
         viewBehaviourTable = new JTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel) viewBehaviourTable.getModel();
+        defaultTableModel.setDataVector(data, columnNames);
         JScrollPane jScrollPane = new JScrollPane(viewBehaviourTable);
 
         JLabel nameLabel = new JLabel("Name:");
