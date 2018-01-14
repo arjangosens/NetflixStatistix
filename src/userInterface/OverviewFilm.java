@@ -50,10 +50,14 @@ public class OverviewFilm extends JPanel implements Overview {
 
     @Override
     public void createComponents() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
         // Create JTable
         jTable = new JTable(data, columnNames);
         JScrollPane scrollPane = new JScrollPane(jTable);
 
-        this.add(scrollPane);
+
+        this.add(scrollPane, constraints);
     }
 }
