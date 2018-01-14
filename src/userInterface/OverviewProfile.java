@@ -1,16 +1,17 @@
 package userInterface;
 
-import applicationLogic.Subscription;
-import applicationLogic.UserProfile;
+import applicationLogic.*;
 import database.DatabaseConnector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class OverviewProfile extends JPanel implements Overview {
 
@@ -45,12 +46,6 @@ public class OverviewProfile extends JPanel implements Overview {
                 "Language",
                 "Age",
                 "Duration"
-        };
-
-        data = new Object[][]{
-                {"Show 1"},
-                {"Show 2"},
-                {"Show 3"},
         };
     }
 
@@ -97,6 +92,56 @@ public class OverviewProfile extends JPanel implements Overview {
         }
     }
 
+    public void loadViewBehaviour() {
+        UserProfile currentUserProfile = null;
+        ArrayList<ViewBehaviour> viewBehaviours = new ArrayList<>();
+
+        for (UserProfile userProfile : allUserProfiles) {
+            if (userProfile.getProfileName().equals(profileDropDown.getSelectedItem())) {
+                currentUserProfile = userProfile;
+            }
+        }
+
+        viewBehaviours.clear();
+        viewBehaviours = UserProfile.getViewbehaviourByUserProfileId(currentUserProfile.getProfileId());
+
+        for (ViewBehaviour viewBehaviour : viewBehaviours) {
+            currentUserProfile.addViewBehaviour(viewBehaviour);
+        }
+
+        data = new Object[viewBehaviours.size()][6];
+        for (int i = 0; i < viewBehaviours.size(); i++) {
+            Program program = Program.getProgramById(viewBehaviours.get(i).getProgramId());
+
+            Object[] y = new Object[6];
+            if (program instanceof Episode) {
+
+
+                y[0] = ((Episode) program).getEpisodeNumber();
+                y[1] = ((Episode) program).getTitle();
+
+                TVshow tVshow = TVshow.get(((Episode) program).getTvShowId());
+                y[2] = tVshow.getGenre();
+                y[3] = tVshow.getLanguage();
+                y[4] = tVshow.getAge();
+                y[5] = program.getDuration();
+
+                data[i] = y;
+            } else {
+                Film film = (Film) program;
+
+                y[0] = "";
+                y[1] = film.getTitle();
+                y[2] = film.getGenre();
+                y[3] = film.getLanguage();
+                y[4] = film.getAge();
+                y[5] = film.getDuration();
+
+                data[i] = y;
+            }
+        }
+    }
+
     @Override
     public void createComponents() {
         JLabel subscriptionDropDownLabel = new JLabel("Select Subscription:");
@@ -119,6 +164,8 @@ public class OverviewProfile extends JPanel implements Overview {
 
         // Fill the profileDropDown with profileNames based on the subscriptionDropDown id
         loadProfileDropDown();
+
+
 
         /**
          * TODO: Create DAO for profiles and convert the commented out code to fit profiles instead of subscriptions
@@ -204,6 +251,19 @@ public class OverviewProfile extends JPanel implements Overview {
 
         viewBehaviourTable = new JTable();
         DefaultTableModel defaultTableModel = (DefaultTableModel) viewBehaviourTable.getModel();
+
+        loadViewBehaviour();
+
+        profileDropDown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (profileDropDown.getSelectedItem() != null)
+                    loadViewBehaviour();
+
+                defaultTableModel.setDataVector(data, columnNames);
+            }
+        });
+
         defaultTableModel.setDataVector(data, columnNames);
         JScrollPane jScrollPane = new JScrollPane(viewBehaviourTable);
 
