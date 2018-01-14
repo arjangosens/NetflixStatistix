@@ -93,6 +93,15 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         }
     }
 
+    private void loadSubscriberInfo(int subId) {
+        SubscriptionDAO subDAO = new SubscriptionDAO(new DatabaseConnector());
+        Subscription sub = subDAO.getSubscription(subId);
+        nameTextField.setText(sub.getSubName());
+        streetTextField.setText(sub.getStreet());
+        houseNrTextField.setText(sub.getHouseNumber());
+        cityTextField.setText(sub.getCity());
+    }
+
     @Override
     public void createComponents() {
         JLabel subsDropDownLabel = new JLabel("Select subscription");
@@ -173,6 +182,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                 if (subsDropDown.getSelectedItem() != null) {
                     loadConnectedProfiles((int)subsDropDown.getSelectedItem());
                     defaultTableModel.setDataVector(data, columnNames);
+                    loadSubscriberInfo((int)subsDropDown.getSelectedItem());
                 }
             }
         });
@@ -180,20 +190,22 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         JScrollPane jScrollPane = new JScrollPane(connectedProfilesJTable);
 
         JLabel nameLabel = new JLabel("Name:");
-        nameTextField = new JTextField("[NAME]", 10);
+        nameTextField = new JTextField("");
         nameLabel.setLabelFor(nameTextField);
 
         JLabel streetLabel = new JLabel("Street:");
-        streetTextField = new JTextField("[STREET]", 10);
+        streetTextField = new JTextField("");
         streetLabel.setLabelFor(streetTextField);
 
         JLabel houseNrLabel = new JLabel("House Nr:");
-        houseNrTextField = new JTextField("[NR]", 3);
+        houseNrTextField = new JTextField("");
         houseNrLabel.setLabelFor(houseNrTextField);
 
         JLabel cityLabel = new JLabel("City:");
-        cityTextField = new JTextField("[CITY]", 10);
+        cityTextField = new JTextField("");
         cityLabel.setLabelFor(cityTextField);
+
+        loadSubscriberInfo((int)subsDropDown.getSelectedItem());
 
         // This button should save the input from the textfields above.
         saveChangesButton = new JButton("Save changes");
