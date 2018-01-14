@@ -94,11 +94,17 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     }
 
     private void loadSubscriberInfo(int subId) {
+        // Create connection with database
         SubscriptionDAO subDAO = new SubscriptionDAO(new DatabaseConnector());
+        // Get the selected SubscriptionID
         Subscription sub = subDAO.getSubscription(subId);
+        // Set the value of nameTextField to the name of the currently selected Subscription
         nameTextField.setText(sub.getSubName());
+        // Set the value of streetTextField to the Street of the currently selected Subscription
         streetTextField.setText(sub.getStreet());
+        // Set the value of houseNrTextField to the housenumber of the currently selected Subscription
         houseNrTextField.setText(sub.getHouseNumber());
+        // Set the value of cityTextField to the city of the currently selected Subscription
         cityTextField.setText(sub.getCity());
     }
 
