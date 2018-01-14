@@ -1,14 +1,16 @@
 package userInterface;
 
 import applicationLogic.Subscription;
+import applicationLogic.UserProfile;
 import database.DatabaseConnector;
 import database.SubscriptionDAO;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
 public class OverviewSubscriptions extends JPanel implements Overview {
 
@@ -21,11 +23,15 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     private JButton createNewSubButton;
     private JButton saveChangesButton;
     private JButton deleteSubButton;
+    private ArrayList<UserProfile> allUserProfiles;
+    private List<Subscription> allSubscriptions;
     private String[] columnNames;
     private Object[][] data;
 
     public OverviewSubscriptions() {
-        createTestData();
+        allUserProfiles = Subscription.getAllUserProfiles();
+        allSubscriptions = Subscription.getAllSubscriptions();
+        createCulumnNames();
         createComponents();
     }
 
@@ -33,16 +39,58 @@ public class OverviewSubscriptions extends JPanel implements Overview {
      * Create the testData for the table.
      * TODO: Fill the profiles object variable in this function.
      */
-    private void createTestData() {
+    private void createCulumnNames() {
         columnNames = new String[]{
                 "Connected profiles",
+                "Age"
         };
+    }
 
-        data = new Object[][]{
-                {"Arjan"},
-                {"Sam"},
-                {"Niek"},
-        };
+    /**
+     * Load the table data with the connected UserProfiles
+     */
+    private void loadConnectedProfiles(int subId) {
+        ArrayList<UserProfile> connectedUserProfiles = new ArrayList<>();
+
+        for (UserProfile userProfile : allUserProfiles) {
+            if (subId == userProfile.getSubId()) {
+                connectedUserProfiles.add(userProfile);
+            }
+        }
+
+        data = new Object[connectedUserProfiles.size()][2];
+        for (int i = 0; i < connectedUserProfiles.size(); i++) {
+            Object[] y = new Object[2];
+
+            y[0] = connectedUserProfiles.get(i).getProfileName();
+            y[1] = connectedUserProfiles.get(i).getAge();
+
+            data[i] = y;
+        }
+    }
+
+    private void loadSubscriptionComboboxData() {
+        // We need to empty the comboBox, else some of the id's will be duplicated.
+        subsDropDown.removeAllItems();
+        // This array holds the id's for that will be viewed in the comboBox.
+        List<Integer> subscriptionIDs = new ArrayList<>();
+
+        // Now we update the allSubscriptions ArrayList.
+        allSubscriptions = Subscription.getAllSubscriptions();
+
+        // Loop through allSubscriptions to get the subscriptionId.
+        for (Subscription subscription : allSubscriptions) {
+            // Store the subscriptionId in the arrayList that holds this id's.
+            subscriptionIDs.add(subscription.getSubscriptionId());
+        }
+
+        // Sort the arrayList
+        Collections.sort(subscriptionIDs);
+
+        // And at last, add the id's to the comboBox.
+        for (Integer id : subscriptionIDs) {
+            subsDropDown.addItem(id);
+        }
     }
 
     @Override
@@ -51,16 +99,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         subsDropDown = new JComboBox();
         subsDropDownLabel.setLabelFor(subsDropDown);
 
-        // Create DAO for getting all the registered subscriptions
-        SubscriptionDAO getSubs = new SubscriptionDAO(new DatabaseConnector());
-        // Create Set to store subscriptions
-        Set<Subscription> listOfSubs = new HashSet<Subscription>();
-        // Add all subscriptions found in the database
-        listOfSubs.addAll(getSubs.getAll());
-        // Loop through the set, put each found SubID in the dropdown menu
-        for (Subscription sub : listOfSubs) {
-            subsDropDown.addItem(sub.getSubscriptionId());
-        }
+        loadSubscriptionComboboxData();
 
         // This button opens an input screen where users can make a new subscription
         createNewSubButton = new JButton("Create new subscription");
@@ -105,6 +144,10 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                             // Call the insert() method, which inserts the data into the Subscription table in the database
                             subDao.insert(subName.getText(), streetName.getText(), houseNumber.getText(), city.getText());
                             isRunning = false;
+
+                            // Update the comboBox.
+                            loadSubscriptionComboboxData();
+
                             // Check if the entered houseNumber doesn't exceed the limit. If it does, show an error message
                         } else if (houseNumber.getText().length() > 5) {
                             JOptionPane.showMessageDialog(inputPanel, "The housenumber can only be 5 characters long");
@@ -119,7 +162,21 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             }
         });
 
-        connectedProfilesJTable = new JTable(data, columnNames);
+        connectedProfilesJTable = new JTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel) connectedProfilesJTable.getModel();
+        loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+        defaultTableModel.setDataVector(data, columnNames);
+
+        subsDropDown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (subsDropDown.getSelectedItem() != null) {
+                    loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+                    defaultTableModel.setDataVector(data, columnNames);
+                }
+            }
+        });
+
         JScrollPane jScrollPane = new JScrollPane(connectedProfilesJTable);
 
         JLabel nameLabel = new JLabel("Name:");
@@ -140,11 +197,50 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         // This button should save the input from the textfields above.
         saveChangesButton = new JButton("Save changes");
+        saveChangesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                SubscriptionDAO subDao = new SubscriptionDAO(new DatabaseConnector());
+                try {
+                    int subID = Integer.parseInt(subsDropDown.getSelectedItem().toString());
+                    String subName = nameTextField.getText();
+                    String subStreet = streetTextField.getText();
+                    String houseNumber = houseNrTextField.getText();
+                    String city = cityTextField.getText();
+
+                    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        subDao.update(subName, subStreet, houseNumber, city, subID);
+                        System.out.println("Subscription information updated");
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // This button should delete the currently selected subscription from the database (and the application).
         deleteSubButton = new JButton("Delete");
-
-
+        deleteSubButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                SubscriptionDAO subDAO = new SubscriptionDAO(new DatabaseConnector());
+                try {
+                    // Get the selected Subscription ID
+                    int subID = Integer.parseInt(subsDropDown.getSelectedItem().toString());
+                    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        subDAO.delete(subID);
+                        System.out.println("Subscription deleted");
+                        loadSubscriptionComboboxData();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         this.add(subsDropDownLabel);
         this.add(subsDropDown);

@@ -3,13 +3,20 @@ package applicationLogic;
 import java.util.ArrayList;
 
 public class UserProfile {
-    private int subscriptionId;
+    private int subId;
     private String profileName;
     private int age;
     private ArrayList<ViewBehaviour> viewBehaviourArrayList;
 
-    public UserProfile(int subscriptionId, String profileName, int age) {
-        this.subscriptionId = subscriptionId;
+//    public UserProfile(int subscriptionId, String profileName, int age) {
+//        this.subscriptionId = subscriptionId;
+//        this.profileName = profileName;
+//        this.age = age;
+//        this.viewBehaviour = new ViewBehaviour();
+//    }
+
+    public UserProfile(int subId, String profileName, int age) {
+        this.subId = subId;
         this.profileName = profileName;
         this.age = age;
         this.viewBehaviourArrayList = new ArrayList<>();
@@ -58,8 +65,8 @@ public class UserProfile {
         }
     }
 
-    public int getSubscriptionId() {
-        return subscriptionId;
+    public int getSubId() {
+        return subId;
     }
 
     public String getProfileName() {
