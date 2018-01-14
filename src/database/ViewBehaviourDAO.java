@@ -5,6 +5,7 @@ import applicationLogic.ViewBehaviour;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,8 +68,8 @@ public class ViewBehaviourDAO {
      * @param profileId The Id of the Profile that the ViewBehaviours are from
      * @return Set<ViewBehaviour> A Set filled with the connected ViewBehaviours of the specified Profile
      */
-    public Set getViewBehavioursOfProfile(int profileId) {
-        Set<ViewBehaviour> viewBehaviourSet = new HashSet<ViewBehaviour>();
+    public ArrayList getViewBehavioursOfProfile(int profileId) {
+        ArrayList<ViewBehaviour> viewBehaviourSet = new ArrayList<>();
         Connection connection = null;
 
         try {

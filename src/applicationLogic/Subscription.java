@@ -46,8 +46,8 @@ public class Subscription {
         return profiles;
     }
 
-    public void createProfile(String profileName, int age) {
-        UserProfile profile = new UserProfile(subscriptionId, profileName, age);
+    public void createProfile(int profileId, String profileName, int age) {
+        UserProfile profile = new UserProfile(subscriptionId, profileId, profileName, age);
         profiles.add(profile);
     }
 

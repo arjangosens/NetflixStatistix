@@ -213,7 +213,7 @@ public class SubscriptionDAO {
 
         try {
             // Create the SQL query
-            String query = "SELECT subscriptionId, profileName, age\n" +
+            String query = "SELECT subscriptionId, profileId, profileName, age\n" +
                     "FROM Subscription\n" +
                     "\tJOIN UserProfile ON Subscription.subscriptionId = UserProfile.subId\n";
 
@@ -225,10 +225,11 @@ public class SubscriptionDAO {
 
             while (resultSet.next()) {
                 int subId = resultSet.getInt("subscriptionId");
+                int profileId = resultSet.getInt("profileId");
                 String profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                userProfiles.add(new UserProfile(subId, profileName, age));
+                userProfiles.add(new UserProfile(subId, profileId, profileName, age));
             }
         } catch (Exception e) {
             e.printStackTrace();
