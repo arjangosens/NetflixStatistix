@@ -177,7 +177,7 @@ public class OverviewProfile extends JPanel implements Overview {
                 if (profileName.getText().length() > 0 && profileName.getText().length() <= 40 && age.getText().length() > 0 && age.getText().length() <= 3) {
 
                     // Call the insert() method, which inserts the data into the UserProfile table in the database
-                    profileDao.insert(subscriptionDropDown.getSelectedIndex(), profileName.getText(), Integer.parseInt(age.getText()));
+                    profileDao.insert(Integer.parseInt(subscriptionDropDown.getSelectedItem().toString()), profileName.getText(), Integer.parseInt(age.getText()));
                     isRunning = false;
                 } else {
                     // If the fields are empty, show an error message
