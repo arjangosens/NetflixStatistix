@@ -28,7 +28,7 @@ public class OverviewSwitchPanel extends JPanel {
         overviewFilm = new OverviewFilm();
         overviewSubscriptions = new OverviewSubscriptions();
 
-        // Set the actual CardLayout
+        // Set the layout to CardLayout
         this.setLayout(new CardLayout());
 
         // Add the panels to the CardLayout
@@ -44,7 +44,9 @@ public class OverviewSwitchPanel extends JPanel {
      * @param panelIndicator The string that indicates the panel that the user will view
      */
     public void switchPanels(String panelIndicator) {
+        // Define a CardLayout to be used by the panelIndicator
         CardLayout cardLayout = (CardLayout) this.getLayout();
+        // Show the panel with the corresponding layout
         cardLayout.show(this, panelIndicator);
     }
 }

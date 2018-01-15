@@ -6,9 +6,11 @@ import java.sql.DriverManager;
 public class DatabaseConnector {
 
     /**
-     * This are the settings for the connection with the database.
-     * Change this url to the settings that you need for your connection.
+     * These are the settings for the connection with the database.
+     * Change this url to the setting that you need for your connection.
      * Because this string will not be the same for everyone.
+     * If you're using a specifc username and password,
+     * you should use the third line and change user and password in that line
      */
 //    private final String connectionUrl = "jdbc:sqlserver://DESKTOP-J0l042L:1433;databaseName=NetflixStatistics;user=SchoolProject;password=school;";
     private final String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=NetflixStatistics;integratedSecurity=true;";
