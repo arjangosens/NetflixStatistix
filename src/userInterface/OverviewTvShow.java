@@ -138,14 +138,20 @@ public class OverviewTvShow extends JPanel implements Overview {
             }
         });
 
-
+        // Set a scrollpane in the table, this makes the table scrollable
         JScrollPane scrollPane = new JScrollPane(jTable);
 
+        // Set the external padding between the scrollPane and the edges of the layout
         constraints.insets = new Insets(0, 0, 0, 0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 0;
+        // Set number of cells in a row
         constraints.gridy = 2;
+        // Set number of cells in a row
         constraints.gridwidth = GridBagConstraints.REMAINDER;
+        // Add the TvShow dropdown menu and the constraints to the TvShow overview page
         this.add(scrollPane, constraints);
     }
 
@@ -155,25 +161,39 @@ public class OverviewTvShow extends JPanel implements Overview {
      * @param currentTvShow The tvShow that is selected in the combobox
      */
     private void tableData(String currentTvShow) {
+        // Define arrayList to store episodes
         ArrayList<Episode> theEpisodes = new ArrayList<>();
 
+        // Loop through tvShows from database
         for (TVshow tVshow : allTvShows) {
+            // Check if title of the TvShow is equal to the currently selected TvShow in the dropdown-menu
             if (tVshow.getTitle().equals(currentTvShow)) {
+                // Add all found episodes to the Episode dropdown menu
                 theEpisodes.addAll(tVshow.getEpisodes());
                 break;
             }
         }
 
+        // Define a new Object array to store table data
         data = new Object[theEpisodes.size()][6];
+        // Loop through the Episodes ArrayList
         for (int i = 0; i < theEpisodes.size(); i++) {
+            // Define object Array to store Episode
             Object[] y = new Object[6];
+            // Get Episode number and add it to the episode Array
             y[0] = theEpisodes.get(i).getEpisodeNumber();
+            // Get Episode title and add it to the episode Array
             y[1] = theEpisodes.get(i).getTitle();
+            // Get Episode genre and add it to the episode Array
             y[2] = theEpisodes.get(i).getTvshow().getGenre();
+            // Get Episode language and add it to the episode Array
             y[3] = theEpisodes.get(i).getTvshow().getLanguage();
+            // Get Episode age rating and add it to the episode Array
             y[4] = theEpisodes.get(i).getTvshow().getAge();
+            // Get Episode duration and add it to the episode Array
             y[5] = theEpisodes.get(i).getDuration();
 
+            // Set column data
             data[i] = y;
         }
     }
