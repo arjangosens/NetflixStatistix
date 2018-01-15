@@ -27,7 +27,7 @@ public class MainFrame extends JFrame implements Runnable {
     @Override
     public void run() {
         this.setTitle("Netflix Statistix");
-        this.setSize(new Dimension(1250, 700));
+        this.setSize(new Dimension(933, 700));
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
