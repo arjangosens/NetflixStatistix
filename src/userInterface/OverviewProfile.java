@@ -67,7 +67,8 @@ public class OverviewProfile extends JPanel implements Overview {
                 "Genre",
                 "Language",
                 "Age",
-                "Duration"
+                "Duration",
+                "Progress"
         };
     }
 
@@ -150,14 +151,14 @@ public class OverviewProfile extends JPanel implements Overview {
         }
 
         // Define object array to store viewbehaviour table data
-        data = new Object[viewBehaviours.size()][6];
+        data = new Object[viewBehaviours.size()][7];
         // Loop through viewBehaviour array
         for (int i = 0; i < viewBehaviours.size(); i++) {
             // Define program object and get the program corresponding to programID
             Program program = Program.getProgramById(viewBehaviours.get(i).getProgramId());
 
             // Define object array to store viewBehaviour information
-            Object[] y = new Object[6];
+            Object[] y = new Object[7];
             // Check if program is an instance of Episode
             if (program instanceof Episode) {
                 // Set the first column to the Episodenumber
@@ -174,6 +175,8 @@ public class OverviewProfile extends JPanel implements Overview {
                 y[4] = tVshow.getAge();
                 // Set the sixth column to the duration of the Episode
                 y[5] = program.getDuration();
+
+                y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
 
                 // Set the viewBehaviour table data
                 data[i] = y;
@@ -194,6 +197,8 @@ public class OverviewProfile extends JPanel implements Overview {
                 // Set the sixth column to the duration of the film
                 y[5] = film.getDuration();
 
+                y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
+                
                 data[i] = y;
             }
         }
