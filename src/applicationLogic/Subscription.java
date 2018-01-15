@@ -1,5 +1,8 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.SubscriptionDAO;
+
 import java.util.ArrayList;
 
 public class Subscription {
@@ -43,8 +46,22 @@ public class Subscription {
         return profiles;
     }
 
-    public void createProfile(String profileName, int age) {
-        UserProfile profile = new UserProfile(subscriptionId, profileName, age);
+    public void createProfile(int profileId, String profileName, int age) {
+        UserProfile profile = new UserProfile(subscriptionId, profileId, profileName, age);
         profiles.add(profile);
+    }
+
+    /**
+     * Calls the database method that will select all the connected userProfiles
+     * @return ArrayList The arrayList of UserProfiles that will be used in the view
+     */
+    public static ArrayList<UserProfile> getAllUserProfiles() {
+        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(new DatabaseConnector());
+        return subscriptionDAO.getAllUserProfiles();
+    }
+
+    public static ArrayList<Subscription> getAllSubscriptions() {
+        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(new DatabaseConnector());
+        return subscriptionDAO.getAll();
     }
 }

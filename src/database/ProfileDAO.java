@@ -5,6 +5,7 @@ import applicationLogic.UserProfile;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class ProfileDAO {
                 String profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                profile = new UserProfile(subId, profileName, age);
+                profile = new UserProfile(subId, profileId, profileName, age);
             }
 
         } catch (Exception e) {
@@ -91,7 +92,7 @@ public class ProfileDAO {
                 profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                profile = new UserProfile(subId, profileName, age);
+                profile = new UserProfile(subId, profileId, profileName, age);
             }
 
         } catch (Exception e) {
@@ -114,8 +115,8 @@ public class ProfileDAO {
      * @param subscriptionId The Id of the Subscription that the profiles are in.
      * @return Set<UserProfile> A Set filled with the connected profiles of the specified Subscription
      */
-    public Set getProfilesOfSubscription(int subscriptionId) {
-        Set<UserProfile> userProfileSet = new HashSet<UserProfile>();
+    public ArrayList<UserProfile> getProfilesOfSubscription(int subscriptionId) {
+        ArrayList<UserProfile> userProfileSet = new ArrayList<>();
         Connection connection = null;
 
         try {
@@ -137,7 +138,7 @@ public class ProfileDAO {
                 String profileName = resultSet.getString("profileName");
                 int age = resultSet.getInt("age");
 
-                userProfileSet.add(new UserProfile(subId, profileName, age));
+                userProfileSet.add(new UserProfile(subId, profileId, profileName, age));
             }
 
         } catch (Exception e) {

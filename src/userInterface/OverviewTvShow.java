@@ -5,6 +5,7 @@ import applicationLogic.TVshow;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -59,9 +60,26 @@ public class OverviewTvShow extends JPanel implements Overview {
 
     @Override
     public void createComponents() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
         tvShowDropDown = new JComboBox(tvShowTitles);
         JLabel forTvshowDropdown = new JLabel("Select a tvShow");
         forTvshowDropdown.setLabelFor(tvShowDropDown);
+
+        constraints.insets = new Insets(0, 0, 0, 0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        this.add(forTvshowDropdown, constraints);
+
+        constraints.insets = new Insets(0, 0, 20, 0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        this.add(tvShowDropDown, constraints);
 
         try {
             tableData(tvShowDropDown.getSelectedItem().toString());
@@ -85,13 +103,17 @@ public class OverviewTvShow extends JPanel implements Overview {
 
         JScrollPane scrollPane = new JScrollPane(jTable);
 
-        this.add(forTvshowDropdown);
-        this.add(tvShowDropDown);
-        this.add(scrollPane);
+        constraints.insets = new Insets(0, 0, 0, 0);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        this.add(scrollPane, constraints);
     }
 
     /**
      * Overrides the current data in the jTable with the new values
+     *
      * @param currentTvShow The tvShow that is selected in the combobox
      */
     private void tableData(String currentTvShow) {

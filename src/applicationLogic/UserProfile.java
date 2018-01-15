@@ -1,15 +1,21 @@
 package applicationLogic;
 
+import database.DatabaseConnector;
+import database.ProfileDAO;
+import database.ViewBehaviourDAO;
+
 import java.util.ArrayList;
 
 public class UserProfile {
-    private int subscriptionId;
+    private int subId;
+    private int profileId;
     private String profileName;
     private int age;
     private ArrayList<ViewBehaviour> viewBehaviourArrayList;
 
-    public UserProfile(int subscriptionId, String profileName, int age) {
-        this.subscriptionId = subscriptionId;
+    public UserProfile(int subId, int profileId, String profileName, int age) {
+        this.subId = subId;
+        this.profileId = profileId;
         this.profileName = profileName;
         this.age = age;
         this.viewBehaviourArrayList = new ArrayList<>();
@@ -18,7 +24,7 @@ public class UserProfile {
     /**
      * Adds a ViewBehaviour object to the ArrayList of this UserProfile
      *
-     * @param viewBehaviour The ViewBehaviour that will get added
+     * @param viewBehaviour The ViewBehaviour that will be added
      */
     public void addViewBehaviour(ViewBehaviour viewBehaviour) {
         if (!viewBehaviourArrayList.contains(viewBehaviour)) {
@@ -58,8 +64,12 @@ public class UserProfile {
         }
     }
 
-    public int getSubscriptionId() {
-        return subscriptionId;
+    public int getProfileId() {
+        return profileId;
+    }
+
+    public int getSubId() {
+        return subId;
     }
 
     public String getProfileName() {
@@ -71,5 +81,15 @@ public class UserProfile {
     }
     public ArrayList<ViewBehaviour> getViewBehaviourArrayList() {
         return viewBehaviourArrayList;
+    }
+
+    public static ArrayList<UserProfile> getUserProfilesBySubscriptionId(int subId) {
+        ProfileDAO profileDAO = new ProfileDAO(new DatabaseConnector());
+        return profileDAO.getProfilesOfSubscription(subId);
+    }
+
+    public static ArrayList<ViewBehaviour> getViewbehaviourByUserProfileId(int profileId) {
+        ViewBehaviourDAO viewBehaviourDAO = new ViewBehaviourDAO(new DatabaseConnector());
+        return viewBehaviourDAO.getViewBehavioursOfProfile(profileId);
     }
 }
