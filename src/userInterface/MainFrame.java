@@ -26,14 +26,21 @@ public class MainFrame extends JFrame implements Runnable {
 
     @Override
     public void run() {
+        // Set the title of the window
         this.setTitle("Netflix Statistix");
+        // Set the resolution of the window
         this.setSize(new Dimension(1250, 700));
+        // Set the action which is to be executed when the user presses the exit button
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // This makes sure the windows spawns in the center of the screen
         this.setLocationRelativeTo(null);
 
+        // Call createComponents(), which creates the gui-components
         createComponents(this.getContentPane());
 
+        // This method call makes the windows unresizable
         this.setResizable(false);
+        // This method call makes the window visible
         this.setVisible(true);
     }
 
@@ -42,15 +49,21 @@ public class MainFrame extends JFrame implements Runnable {
      * @param container The contentPane from the {@link MainFrame}
      */
     private void createComponents(Container container) {
+        // Set the layout of the container to BorderLayout
         this.setLayout(new BorderLayout());
 
+        // Define a new overviewSwitchPanel
         overviewSwitchPanel = new OverviewSwitchPanel();
+        // Define a new SideMenu
         sideMenu = new SideMenu();
+        // Define a new Footer
         Footer footer = new Footer();
 
-
+        // Add the overviewSwitchPanel to the the Mainframe
         this.add(overviewSwitchPanel);
+        // Add the sideMenu to the left-side of the container
         container.add(sideMenu, BorderLayout.WEST);
+        // Add the Footer to the bottom-side of the container
         container.add(footer, BorderLayout.SOUTH);
     }
 

@@ -26,9 +26,12 @@ public class HomeScreen extends JPanel {
         this.add(title, constraints);
 
         try {
+            // Specify the path to the image
             BufferedImage image = ImageIO.read(new File("./img/netflixLogo.jpg"));
+            // Define a label, which shows the image in the form of an ImageIcon
             JLabel imageLabel = new JLabel(new ImageIcon(image));
 
+            // Add the image and constraints to the Homescreen
             this.add(imageLabel, constraints);
         } catch (IOException e) {
             System.out.println(e);
