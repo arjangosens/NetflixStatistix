@@ -30,3 +30,8 @@ private final String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS2017
 
 ### Stap 3: De applicatie opstarten
 Nadat u de *DatabaseConnector* class aangepast heeft kunt de de *main* methode in de *Main* class uitvoeren en zal de User Interface starten.
+
+## Mogelijke problemen
+Door het feit dat wij niet allemaal precies dezelfde Java en jdbc-versie hebben kan het voorkomen dat beide of een van de twee dingen niet goed geïnitialiseerd zijn.
+
+Mocht dit het geval zijn dan kunt u dit in de Project Structure van Intellij aanpassen.
