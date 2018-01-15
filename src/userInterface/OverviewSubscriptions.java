@@ -67,8 +67,10 @@ public class OverviewSubscriptions extends JPanel implements Overview {
      */
     public void loadEverything() {
         loadSubscriptionComboboxData();
-//        loadConnectedProfiles();
-//        loadSubscriberInfo();
+        if (subsDropDown.getSelectedItem() != null) {
+            loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+            loadSubscriberInfo((int)subsDropDown.getSelectedItem());
+        }
     }
 
     /**
@@ -351,7 +353,8 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                     int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         subDao.update(subName, subStreet, houseNumber, city, subID);
-                        System.out.println("Subscription information updated");
+                        loadEverything();
+                        JOptionPane.showMessageDialog(null, "Subscription Updated");
                     }
 
 
@@ -379,9 +382,11 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                     int subID = Integer.parseInt(subsDropDown.getSelectedItem().toString());
                     int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        subDAO.delete(subID);
-                        System.out.println("Subscription deleted");
+                        boolean isDeleted = false;
+                        isDeleted = subDAO.delete(subID);
                         loadSubscriptionComboboxData();
+                        if (isDeleted)
+                            JOptionPane.showMessageDialog(null, "Subscription deleted");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

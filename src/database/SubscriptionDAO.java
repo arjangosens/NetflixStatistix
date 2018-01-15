@@ -3,6 +3,7 @@ package database;
 import applicationLogic.Subscription;
 import applicationLogic.UserProfile;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -190,7 +191,7 @@ public class SubscriptionDAO {
      * Delete a single subscription
      * @param subscriptionID The subscriptionID is given, else this method does not know what to delete...
      */
-    public void delete(int subscriptionID) {
+    public boolean delete(int subscriptionID) {
         // Create a new connection
         Connection connection = databaseConnector.getConnection();
 
@@ -202,11 +203,13 @@ public class SubscriptionDAO {
             Statement statement = connection.createStatement();
             statement.execute(query);
 
+            return true;
             // Execute the query. After executing a Resultset will be stored in this variable
 //            ResultSet resultSet = statement.executeQuery(query);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "You can not delete the subscription while there are connected profiles");
+            return false;
         } finally {
             if (connection != null) {
                 try {
