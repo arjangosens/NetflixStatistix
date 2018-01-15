@@ -72,7 +72,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
         // Define Object Array to store connectedUserProfiles, which is used to show as table data
         data = new Object[connectedUserProfiles.size()][2];
-        // Loop through the 
+        // Loop through the
         for (int i = 0; i < connectedUserProfiles.size(); i++) {
             Object[] y = new Object[2];
 
