@@ -4,6 +4,8 @@ import applicationLogic.OverviewSwitchController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SideMenu extends JPanel{
     private JButton homeBtn;
@@ -38,9 +40,21 @@ public class SideMenu extends JPanel{
         // Add actionlisteners to the buttons
         homeBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.HOMESCREENPANEL));
         profileOverviewBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.OVERVIEWPROFILEPANEL));
+        profileOverviewBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OverviewProfile.getInstance().loadEverything();
+            }
+        });
         tvShowOverviewBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.OVERVIEWTVSHOW));
         filmOverviewBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.OVERVIEWFILMPANEL));
         subsOverviewBtn.addActionListener(new OverviewSwitchController(OverviewSwitchPanel.OVERVIEWSUBSCRIPTIONS));
+        subsOverviewBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OverviewSubscriptions.getInstance().loadEverything();
+            }
+        });
 
         // Add the buttons to the sidemenu
         this.add(homeBtn);

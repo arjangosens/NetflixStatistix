@@ -31,7 +31,16 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     private String[] columnNames;
     private Object[][] data;
 
-    public OverviewSubscriptions() {
+    private static OverviewSubscriptions instance = null;
+
+    public static OverviewSubscriptions getInstance() {
+        if (instance == null)
+            instance = new OverviewSubscriptions();
+
+        return instance;
+    }
+
+    private OverviewSubscriptions() {
         // Define and fill the allUserProfiles ArrayList with all UserProfiles found in the database
         allUserProfiles = Subscription.getAllUserProfiles();
         // Define and fill the allSubscriptions ArrayList with all Subscriptions found in the database
@@ -51,6 +60,12 @@ public class OverviewSubscriptions extends JPanel implements Overview {
                 "Connected profiles",
                 "Age"
         };
+    }
+
+    public void loadEverything() {
+        loadSubscriptionComboboxData();
+//        loadConnectedProfiles();
+//        loadSubscriberInfo();
     }
 
     /**

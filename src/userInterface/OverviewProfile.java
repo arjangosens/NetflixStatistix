@@ -31,12 +31,28 @@ public class OverviewProfile extends JPanel implements Overview {
     private String[] columnNames;
     private Object[][] data;
 
-    public OverviewProfile() {
+    private static OverviewProfile instance = null;
+
+    public static OverviewProfile getInstance() {
+        if (instance == null) {
+            instance = new OverviewProfile();
+        }
+        return instance;
+    }
+
+    private OverviewProfile() {
         // Define ArrayList to store subscriptions, add all subscriptions found in the database to the ArrayList
         allSubscriptions = Subscription.getAllSubscriptions();
         // Call createTestData()
         createTestData();
         createComponents();
+    }
+
+    public void loadEverything() {
+        loadSubscriptionDropDown();
+        loadProfileDropDown();
+        loadViewBehaviour();
+        loadProfileInfo();
     }
 
     /**
@@ -63,9 +79,8 @@ public class OverviewProfile extends JPanel implements Overview {
         List<Integer> subscriptionIDs = new ArrayList<>();
 
         // Fill the Subscription ArrayList with all the subscriptions from the database
-//        allSubscriptions.clear();
         allSubscriptions = Subscription.getAllSubscriptions();
-//        subscriptionDropDown.removeAllItems();
+        subscriptionDropDown.removeAllItems();
 
         // Loop through allSubscriptions to get the subscriptionId.
         for (Subscription subscription : allSubscriptions) {
@@ -92,7 +107,8 @@ public class OverviewProfile extends JPanel implements Overview {
         profileDropDown.removeAllItems();
 
         // Store all userprofiles which correspond to the selected Subscription
-        allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+        if (subscriptionDropDown.getSelectedItem() != null)
+            allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
 
         // Loop through all UserProfiles
         for (UserProfile userProfile : allUserProfiles) {

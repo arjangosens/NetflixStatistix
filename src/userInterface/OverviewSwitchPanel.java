@@ -23,10 +23,10 @@ public class OverviewSwitchPanel extends JPanel {
     public OverviewSwitchPanel() {
         // Create the panels
         homeScreen = new HomeScreen();
-        overviewProfile = new OverviewProfile();
+        overviewProfile = OverviewProfile.getInstance();
         overviewTvShow = new OverviewTvShow();
         overviewFilm = new OverviewFilm();
-        overviewSubscriptions = new OverviewSubscriptions();
+        overviewSubscriptions = OverviewSubscriptions.getInstance();
 
         // Set the layout to CardLayout
         this.setLayout(new CardLayout());
