@@ -111,8 +111,13 @@ public class OverviewProfile extends JPanel implements Overview {
         profileDropDown.removeAllItems();
 
         // Store all userprofiles which correspond to the selected Subscription
-        if (subscriptionDropDown.getSelectedItem() != null)
+        if (subscriptionDropDown.getSelectedItem() != null) {
             allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int) subscriptionDropDown.getSelectedItem());
+        }
+
+        if (allUserProfiles.isEmpty()) {
+            data = new Object[][]{};
+        }
 
         // Loop through all UserProfiles
         for (UserProfile userProfile : allUserProfiles) {
@@ -145,65 +150,69 @@ public class OverviewProfile extends JPanel implements Overview {
         // Clear the viewBehaviour list
         viewBehaviours.clear();
         // get viewbehaviour list from database and store it in this variable
-        viewBehaviours = UserProfile.getViewbehaviourByUserProfileId(currentUserProfile.getProfileId());
+        if (currentUserProfile != null) {
+            viewBehaviours = UserProfile.getViewbehaviourByUserProfileId(currentUserProfile.getProfileId());
 
-        // Loop through the list of viewbehaviour
-        for (ViewBehaviour viewBehaviour : viewBehaviours) {
-            // Add every viewbehaviour object to the viewBehaviour list
-            currentUserProfile.addViewBehaviour(viewBehaviour);
-        }
-
-        // Define object array to store viewbehaviour table data
-        data = new Object[viewBehaviours.size()][7];
-        // Loop through viewBehaviour array
-        for (int i = 0; i < viewBehaviours.size(); i++) {
-            // Define program object and get the program corresponding to programID
-            Program program = Program.getProgramById(viewBehaviours.get(i).getProgramId());
-
-            // Define object array to store viewBehaviour information
-            Object[] y = new Object[7];
-            // Check if program is an instance of Episode
-            if (program instanceof Episode) {
-                // Set the first column to the Episodenumber
-                y[0] = ((Episode) program).getEpisodeNumber();
-                // Set the second column to the title of the Episode
-                y[1] = ((Episode) program).getTitle();
-                // Define a TVshow object to show in the table
-                TVshow tVshow = TVshow.get(((Episode) program).getTvShowId());
-                // Set the third column to the genre of the TvShow
-                y[2] = tVshow.getGenre();
-                // Set the fourth column to the language of the TvShow
-                y[3] = tVshow.getLanguage();
-                // Set the fifth column to the age of the TvShow
-                y[4] = tVshow.getAge();
-                // Set the sixth column to the duration of the Episode
-                y[5] = program.getDuration();
-                // Set the seventh column to the progress percentage of the viewbehaviour
-                y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
-
-                // Set the viewBehaviour table data
-                data[i] = y;
-            } else {
-                // Define new Film object
-                Film film = (Film) program;
-
-                // Set first column to be empty
-                y[0] = "";
-                // Set the second column to the title of the Film
-                y[1] = film.getTitle();
-                // Set the third column to the genre of the Film
-                y[2] = film.getGenre();
-                // Set the fourth column to the language of the Film
-                y[3] = film.getLanguage();
-                // Set the fifth column to the age of the Film
-                y[4] = film.getAge();
-                // Set the sixth column to the duration of the film
-                y[5] = film.getDuration();
-                // Set the seventh column to the progress percentage of the viewbehaviour
-                y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
-
-                data[i] = y;
+            // Loop through the list of viewbehaviour
+            for (ViewBehaviour viewBehaviour : viewBehaviours) {
+                // Add every viewbehaviour object to the viewBehaviour list
+                currentUserProfile.addViewBehaviour(viewBehaviour);
             }
+
+            // Define object array to store viewbehaviour table data
+            data = new Object[viewBehaviours.size()][7];
+            // Loop through viewBehaviour array
+            for (int i = 0; i < viewBehaviours.size(); i++) {
+                // Define program object and get the program corresponding to programID
+                Program program = Program.getProgramById(viewBehaviours.get(i).getProgramId());
+
+                // Define object array to store viewBehaviour information
+                Object[] y = new Object[7];
+                // Check if program is an instance of Episode
+                if (program instanceof Episode) {
+                    // Set the first column to the Episodenumber
+                    y[0] = ((Episode) program).getEpisodeNumber();
+                    // Set the second column to the title of the Episode
+                    y[1] = ((Episode) program).getTitle();
+                    // Define a TVshow object to show in the table
+                    TVshow tVshow = TVshow.get(((Episode) program).getTvShowId());
+                    // Set the third column to the genre of the TvShow
+                    y[2] = tVshow.getGenre();
+                    // Set the fourth column to the language of the TvShow
+                    y[3] = tVshow.getLanguage();
+                    // Set the fifth column to the age of the TvShow
+                    y[4] = tVshow.getAge();
+                    // Set the sixth column to the duration of the Episode
+                    y[5] = program.getDuration();
+                    // Set the seventh column to the progress percentage of the viewbehaviour
+                    y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
+
+                    // Set the viewBehaviour table data
+                    data[i] = y;
+                } else {
+                    // Define new Film object
+                    Film film = (Film) program;
+
+                    // Set first column to be empty
+                    y[0] = "";
+                    // Set the second column to the title of the Film
+                    y[1] = film.getTitle();
+                    // Set the third column to the genre of the Film
+                    y[2] = film.getGenre();
+                    // Set the fourth column to the language of the Film
+                    y[3] = film.getLanguage();
+                    // Set the fifth column to the age of the Film
+                    y[4] = film.getAge();
+                    // Set the sixth column to the duration of the film
+                    y[5] = film.getDuration();
+                    // Set the seventh column to the progress percentage of the viewbehaviour
+                    y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
+
+                    data[i] = y;
+                }
+            }
+        } else {
+            data = new Object[][]{};
         }
     }
 
@@ -302,6 +311,11 @@ public class OverviewProfile extends JPanel implements Overview {
         // Define new GridBagConstraints
         GridBagConstraints constraints = new GridBagConstraints();
 
+        // Define a new table for to show the viewBehaviour
+        viewBehaviourTable = new JTable();
+        // Define a table model which is to be used by the viewBehaviourTable
+        DefaultTableModel defaultTableModel = (DefaultTableModel) viewBehaviourTable.getModel();
+
         // Define a label for the Subscription dropdown-menu
         JLabel subscriptionDropDownLabel = new JLabel("Select Subscription:");
         // Define a new combobox which is used as dropdown menu to show Subscriptions
@@ -318,6 +332,7 @@ public class OverviewProfile extends JPanel implements Overview {
             public void actionPerformed(ActionEvent e) {
                 // Load the profiles in the dropdown menu corresponding to the Subscription ID
                 loadProfileDropDown();
+                defaultTableModel.setDataVector(data, columnNames);
             }
         });
 
@@ -345,10 +360,7 @@ public class OverviewProfile extends JPanel implements Overview {
             }
         });
 
-        // Define a new table for to show the viewBehaviour
-        viewBehaviourTable = new JTable();
-        // Define a table model which is to be used by the viewBehaviourTable
-        DefaultTableModel defaultTableModel = (DefaultTableModel) viewBehaviourTable.getModel();
+
 
         // Load the viewBehaviourTable data
         loadViewBehaviour();
