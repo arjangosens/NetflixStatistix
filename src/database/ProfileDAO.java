@@ -69,6 +69,9 @@ public class ProfileDAO {
      * @param profileName The name of the profile
      * @return UserProfile The profile in the database that is found by the subscriptionId and profileName
      */
+    /**
+     * TODO: Is this method used?
+     */
     public UserProfile getProfile(int subscriptionId, String profileName) {
         UserProfile profile = null;
         Connection connection = null;
