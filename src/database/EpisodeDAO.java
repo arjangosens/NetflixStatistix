@@ -47,17 +47,27 @@ public class EpisodeDAO {
 //        return episode;
 //    }
 
+    /**
+     * Gets all the episodes from the database
+     *
+     * @return Set<Episode> A Set filled with all episodes from the database
+     */
     public Set<Episode> getAll() {
+        // Create connection with the database
         Connection connection = databaseConnector.getConnection();
         Set<Episode> episodes = new HashSet<>();
 
         try {
+            //Form SQL query to search for episodes
             String query = "SELECT episodeId, Episode.programId, Episode.tvshowId, episodeNr, Program.title, duration\n" +
                     "FROM Episode\n" +
                     "JOIN Program ON Episode.programId = Program.programId\n" +
                     "JOIN TVshow ON Episode.tvshowId = TVshow.tvshowId";
 
+            // Create statement used to execute the query
             Statement statement = connection.createStatement();
+
+            // Execute the query. After executing a Resultset will be stored in this variable
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
