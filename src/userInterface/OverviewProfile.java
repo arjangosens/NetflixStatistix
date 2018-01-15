@@ -63,9 +63,9 @@ public class OverviewProfile extends JPanel implements Overview {
         List<Integer> subscriptionIDs = new ArrayList<>();
 
         // Fill the Subscription ArrayList with all the subscriptions from the database
-        allSubscriptions.clear();
+//        allSubscriptions.clear();
         allSubscriptions = Subscription.getAllSubscriptions();
-        subscriptionDropDown.removeAllItems();
+//        subscriptionDropDown.removeAllItems();
 
         // Loop through allSubscriptions to get the subscriptionId.
         for (Subscription subscription : allSubscriptions) {
@@ -293,7 +293,6 @@ public class OverviewProfile extends JPanel implements Overview {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Load the profiles in the dropdown menu corresponding to the Subscription ID
-                loadSubscriptionDropDown();
                 loadProfileDropDown();
             }
         });
