@@ -44,4 +44,31 @@ public class ViewBehaviour {
     public void setProgressPerct(double progressPerct) {
         this.progressPerct = progressPerct;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+
+        if (getClass() != object.getClass()) {
+            return false;
+        }
+
+        ViewBehaviour compared = (ViewBehaviour) object;
+
+        if (this.getViewBehaviourId() != compared.getViewBehaviourId()) {
+            return false;
+        }
+
+        if (this.getProfileId() != compared.getProfileId()) {
+            return false;
+        }
+
+        if (this.getProgramId() != compared.getProgramId()) {
+            return false;
+        }
+
+        return true;
+    }
 }
