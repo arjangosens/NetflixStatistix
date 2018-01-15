@@ -117,6 +117,8 @@ public class OverviewProfile extends JPanel implements Overview {
 
         if (allUserProfiles.isEmpty()) {
             data = new Object[][]{};
+            nameTextField.setText("");
+            ageTextField.setText("");
         }
 
         // Loop through all UserProfiles
@@ -361,7 +363,6 @@ public class OverviewProfile extends JPanel implements Overview {
         });
 
 
-
         // Load the viewBehaviourTable data
         loadViewBehaviour();
 
@@ -433,18 +434,18 @@ public class OverviewProfile extends JPanel implements Overview {
         deleteProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // Get all UserProfiles from the database and store them in allUserProfiles ArrayList
-                allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int) subscriptionDropDown.getSelectedItem());
+                UserProfile userProfile = null;
                 // Loop through list of UserProfiles
-                for (UserProfile profile : allUserProfiles) {
+                for (UserProfile p : allUserProfiles) {
                     // Check if profileName in list is equal to the currently selected item in the profileDropdown-menu
-                    if (profile.getProfileName().equals(profileDropDown.getSelectedItem().toString())) {
-                        // Call the deleteUserProfile() method, which deletes the profile corresponding to the given profileID from the database
-                        deleteUserProfile(profile.getProfileId());
-                        // Reload the profileDropDown-menu
-                        loadProfileDropDown();
+                    if (p.getProfileName().equals(profileDropDown.getSelectedItem())) {
+                        userProfile = p;
                     }
                 }
+                // Call the deleteUserProfile() method, which deletes the profile corresponding to the given profileID from the database
+                deleteUserProfile(userProfile.getProfileId());
+                // Reload the profileDropDown-menu
+                loadProfileDropDown();
             }
         });
 
