@@ -252,6 +252,22 @@ public class OverviewProfile extends JPanel implements Overview {
         }
     }
 
+    /**
+     * This method loads the info of the current selected profile and shows it in the input fields.
+     */
+    private void loadProfileInfo() {
+        UserProfile userProfile = null;
+
+        for (UserProfile u : allUserProfiles) {
+            if (u.getProfileName().equals(profileDropDown.getSelectedItem())) {
+                userProfile = u;
+            }
+        }
+
+        nameTextField.setText(userProfile.getProfileName());
+        ageTextField.setText(userProfile.getAge() + "");
+    }
+
     @Override
     public void createComponents() {
         // Set the layout of the overViewProfile to GridbagLayout
@@ -315,9 +331,11 @@ public class OverviewProfile extends JPanel implements Overview {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check if there is a profile selected in the profileDropDown-menu
-                if (profileDropDown.getSelectedItem() != null)
+                if (profileDropDown.getSelectedItem() != null) {
                     // Load the viewBehaviour from the selected UserProfile
                     loadViewBehaviour();
+                    loadProfileInfo();
+                }
 
                 // Fill the table with the columnnames and data
                 defaultTableModel.setDataVector(data, columnNames);
@@ -391,6 +409,8 @@ public class OverviewProfile extends JPanel implements Overview {
                 }
             }
         });
+
+        loadProfileInfo();
 
         // Set the external padding between the SubscriptionDropdownLabel and the edges of the layout
         constraints.insets = new Insets(0,0,0,80);
