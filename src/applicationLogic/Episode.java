@@ -37,32 +37,32 @@ public class Episode extends Program {
     }
 
     /**
-     * Simple getter method to get the episodeId.
-     * @return episodeId
+     * Simple getter method to get the {@link Episode#episodeId}.
+     * @return {@link Episode#episodeId}
      */
     public int getEpisodeId() {
         return episodeId;
     }
 
     /**
-     * Simple getter method to get the tvShowId.
-     * @return tvShowId
+     * Simple getter method to get the {@link Episode#tvShowId}.
+     * @return {@link Episode#tvShowId}
      */
     public int getTvShowId() {
         return tvShowId;
     }
 
     /**
-     * Simple getter method to get the episodeNumber ("S1E1").
-     * @return  episodeNumber ("S1E1")
+     * Simple getter method to get the {@link Episode#episodeNumber} ("S1E1").
+     * @return  {@link Episode#episodeNumber} ("S1E1")
      */
     public String getEpisodeNumber() {
         return episodeNumber;
     }
 
     /**
-     * Simple getter method to get the actual tvShow were the episode is linked to.
-     * @return
+     * Simple getter method to get the actual {@link Episode#tVshow} were the episode is linked to.
+     * @return {@link Episode#tVshow}
      */
     public TVshow getTvshow() {
         return tVshow;
@@ -71,7 +71,7 @@ public class Episode extends Program {
     /**
      * Simple setter method to set the tvShow for a single episode.
      * if the tvShow is set for a single episode, than the episode is happy because it is not homeless anymore.
-     * @param tVshow
+     * @param tVshow a sinlge episode will be set the this tvShow.
      */
     public void setTvshow(TVshow tVshow) {
         this.tVshow = tVshow;
