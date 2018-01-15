@@ -44,7 +44,6 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
     /**
      * Create the testData for the table.
-     * TODO: Fill the profiles object variable in this function.
      */
     private void createCulumnNames() {
         // Define String Array to store the columnNames which are to be shown in the Subscription Overview table
@@ -242,17 +241,17 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
 
         JLabel nameLabel = new JLabel("Name:");
-        nameTextField = new JTextField("");
+        nameTextField = new JTextField(6);
         nameLabel.setLabelFor(nameTextField);
 
-        constraints.insets = new Insets(0,0,0,80);
+        constraints.insets = new Insets(0,0,0,60);
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.gridwidth = 1;
         this.add(nameLabel, constraints);
 
-        constraints.insets = new Insets(0,80,0,0);
+        constraints.insets = new Insets(0,60,0,0);
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.gridx = 0;
         constraints.gridy = 2;
@@ -260,7 +259,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         this.add(nameTextField, constraints);
 
         JLabel streetLabel = new JLabel("Street:");
-        streetTextField = new JTextField("");
+        streetTextField = new JTextField(10);
         streetLabel.setLabelFor(streetTextField);
 
         constraints.insets = new Insets(0,0,0,80);
@@ -278,7 +277,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         this.add(streetTextField, constraints);
 
         JLabel houseNrLabel = new JLabel("House Nr:");
-        houseNrTextField = new JTextField("");
+        houseNrTextField = new JTextField(3);
         houseNrLabel.setLabelFor(houseNrTextField);
 
         constraints.insets = new Insets(0,0,0,60);
@@ -296,7 +295,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         this.add(houseNrTextField, constraints);
 
         JLabel cityLabel = new JLabel("City:");
-        cityTextField = new JTextField("");
+        cityTextField = new JTextField(6);
         cityLabel.setLabelFor(cityTextField);
 
         loadSubscriberInfo((int)subsDropDown.getSelectedItem());
