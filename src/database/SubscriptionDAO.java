@@ -207,7 +207,8 @@ public class SubscriptionDAO {
 //            ResultSet resultSet = statement.executeQuery(query);
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "You can not delete the subscription while there are connected profiles");
+            JOptionPane.showMessageDialog(null, "You can not delete the subscription while there are connected profiles\n" +
+                    "Delete the connected profiles first");
             return false;
         } finally {
             if (connection != null) {
