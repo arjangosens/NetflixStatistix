@@ -1,9 +1,29 @@
 package applicationLogic;
 
+/**
+ * The viewBehaviour class is used to store the content that is selected by the database.
+ * Later this class is used to get the program and to get the profile.
+ * The program will be viewed in a table for the specific userProfile.
+ */
 public class ViewBehaviour {
+    /**
+     * The unique identifier for a single viewBehaviour
+     */
     private int viewBehaviourId;
+
+    /**
+     * The unique identifier for a userProfile.
+     */
     private int profileId;
+
+    /**
+     * The unique identifier for a program.
+     */
     private int programId;
+
+    /**
+     * The progress percentage is used to indicate the progress of the program.
+     */
     private double progressPerct;
 
     public ViewBehaviour(int viewBehaviourId, int profileId, int programId, double progressPerct) {
@@ -29,6 +49,10 @@ public class ViewBehaviour {
         this.profileId = profileId;
     }
 
+    /**
+     * Simple getter method to get the {@link ViewBehaviour#programId}.
+     * @return {@link ViewBehaviour#programId}
+     */
     public int getProgramId() {
         return programId;
     }
