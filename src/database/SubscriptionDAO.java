@@ -64,6 +64,11 @@ public class SubscriptionDAO {
         return subscription;
     }
 
+    /**
+     *
+     * Get all subscriptions from the database
+     * @return ArrayList<Subscription> An ArrayList with all the Subscriptions from the database
+     */
     public ArrayList<Subscription> getAll() {
         ArrayList<Subscription> subscriptionArrayList = new ArrayList<>();
 
@@ -103,8 +108,16 @@ public class SubscriptionDAO {
         return subscriptionArrayList;
     }
 
+    /**
+     * Updates a Subscription in the database based on it's subscriptionId
+     * @param nameSubscriber The new or current name of the subscriber
+     * @param street The new or current street of the subscriber
+     * @param houseNumber The new or current houseNumber of the subscriber
+     * @param city The new or current city of the subscriber
+     * @param id The current subscriptionId of the Subscription that's to be changed
+     */
     public void update(String nameSubscriber, String street, String houseNumber, String city, int id) {
-        // Creates a new connection with the database
+        // Create connection with the database
         Connection connection = databaseConnector.getConnection();
 
         try {
@@ -205,6 +218,11 @@ public class SubscriptionDAO {
         }
     }
 
+    /**
+     * Gets all connected UserProfiles from the database
+     *
+     * @return ArrayList<UserProfile> An ArrayList with all connected profiles
+     */
     public ArrayList<UserProfile> getAllUserProfiles() {
         // Create a new connection with the database
         Connection connection = databaseConnector.getConnection();

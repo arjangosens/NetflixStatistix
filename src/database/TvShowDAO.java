@@ -62,6 +62,11 @@ public class TvShowDAO {
         return tvshow;
     }
 
+    /**
+     * Gets all TVshows from the database
+     *
+     * @return HashSet<TVshow> A HashSet with all tvshows from the database
+     */
     public Set<TVshow> getAll() {
         HashSet<TVshow> tVshows = new HashSet<>();
         Connection connection = null;

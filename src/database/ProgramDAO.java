@@ -17,19 +17,29 @@ public class ProgramDAO {
         this.databaseConnector = databaseConnector;
     }
 
+    /**
+     * Get a single program from the database
+     *
+     * @param programId The id of the Program that you would like to get
+     * @return Program The program that is found in the batabase by the id
+     */
     public Program getProgramById(int programId) {
+        // Create connection with database
         Connection connection = databaseConnector.getConnection();
         Program program = null;
 
         try {
+            // Form SQL queries to search for Program
             String programQuery = "SELECT * FROM Program WHERE programId = " + programId;
             String episodeQuery = "SELECT * FROM Episode WHERE programId = " + programId;
             String filmQuery = "SELECT * FROM Film WHERE programId = " + programId;
 
+            // Create statement used to execute the query
             Statement statement = connection.createStatement();
             Statement episodeStatement = connection.createStatement();
             Statement filmStatement = connection.createStatement();
 
+            // Execute the query. After executing Resultsets will be stored in these variables
             ResultSet programResultSet = statement.executeQuery(programQuery);
             ResultSet episodeResultSet = episodeStatement.executeQuery(episodeQuery);
             ResultSet filmResultSet = filmStatement.executeQuery(filmQuery);

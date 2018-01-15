@@ -16,16 +16,29 @@ public class FilmDAO {
         this.databaseConnector = databaseConnector;
     }
 
+    /**
+     * TODO: Change String languae to language
+     *
+     * Gets all films from the database
+     *
+     * @return Set<Film> a set containing all films of the database
+     */
     public Set<Film> getAll() {
+
+        // Create connection with database
         Connection connection = databaseConnector.getConnection();
         Set<Film> films = new HashSet<>();
 
         try {
+            // Form SQL query to search for films
             String query = "SELECT *\n" +
                     "FROM Film\n" +
                     "JOIN Program ON Film.programId = Program.programId;";
 
+            // Create statement used to execute the query
             Statement statement = connection.createStatement();
+
+            // Execute the query. After executing a Resultset will be stored in this variable
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
