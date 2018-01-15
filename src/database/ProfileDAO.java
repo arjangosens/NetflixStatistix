@@ -170,7 +170,7 @@ public class ProfileDAO {
             connection = databaseConnector.getConnection();
 
             // Form SQL query to update Profile
-            String query = String.format("UPDATE UserProfile SET profileName = %s, age = %d WHERE profileId = %d)",
+            String query = String.format("UPDATE UserProfile SET profileName = '%s', age = '%d' WHERE profileId = '%d';",
                     profileName,
                     age,
                     profileId);
@@ -179,7 +179,7 @@ public class ProfileDAO {
             Statement statement = connection.createStatement();
 
             // Execute query
-            statement.executeQuery(query);
+            statement.execute(query);
             System.out.println("Update complete");
 
         } catch (Exception e) {
@@ -246,9 +246,6 @@ public class ProfileDAO {
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
             statement.execute(query);
-
-            // Execute the query. After executing a Resultset will be stored in this variable
-            statement.executeQuery(query);
             System.out.println("Profile successfully deleted");
 
         } catch (Exception e) {
