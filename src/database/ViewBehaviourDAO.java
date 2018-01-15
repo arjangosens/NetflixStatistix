@@ -131,7 +131,6 @@ public class ViewBehaviourDAO {
 
             // Execute query
             statement.executeQuery(query);
-            System.out.println("Update complete");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,7 +170,6 @@ public class ViewBehaviourDAO {
 
             // Execute query
             statement.executeUpdate(query);
-            System.out.println("Insert complete");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,7 +205,6 @@ public class ViewBehaviourDAO {
 
             // Execute the query. After executing a Resultset will be stored in this variable
             statement.executeQuery(query);
-            System.out.println("ViewBehaviour successfully deleted");
 
         } catch (Exception e) {
             e.printStackTrace();

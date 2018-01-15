@@ -114,7 +114,7 @@ public class OverviewTvShow extends JPanel implements Overview {
             // Try to get the TvShow data from the database and add it to the table
             tableData(tvShowDropDown.getSelectedItem().toString());
         } catch (NullPointerException e) {
-            System.out.println("Could not get TvShow table data");
+            e.printStackTrace();
         }
         if (data == null) {
             // Create new data object which is used as table data

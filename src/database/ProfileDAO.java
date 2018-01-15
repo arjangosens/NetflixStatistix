@@ -81,7 +81,6 @@ public class ProfileDAO {
 
             // Execute query
             statement.execute(query);
-            System.out.println("Update complete");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,7 +113,6 @@ public class ProfileDAO {
 
             // Execute query
             statement.executeUpdate(query);
-            System.out.println("Insert complete");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +145,6 @@ public class ProfileDAO {
             // Create statement used to execute the query
             Statement statement = connection.createStatement();
             statement.execute(query);
-            System.out.println("Profile successfully deleted");
 
         } catch (Exception e) {
             e.printStackTrace();

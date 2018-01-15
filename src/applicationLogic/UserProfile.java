@@ -48,9 +48,6 @@ public class UserProfile {
     public void addViewBehaviour(ViewBehaviour viewBehaviour) {
         if (!viewBehaviourArrayList.contains(viewBehaviour)) {
             viewBehaviourArrayList.add(viewBehaviour);
-            System.out.println("viewBehaviour successfully added");
-        } else {
-            System.out.println("The specified viewBehaviour already exists!");
         }
     }
 
@@ -62,9 +59,6 @@ public class UserProfile {
     public void deleteViewBehaviour(ViewBehaviour viewBehaviour) {
         if (viewBehaviourArrayList.contains(viewBehaviour)) {
             viewBehaviourArrayList.remove(viewBehaviour);
-            System.out.println("Deletion of viewBehaviour successful");
-        } else {
-            System.out.println("The specified viewBehaviour doesn't exist!");
         }
     }
 

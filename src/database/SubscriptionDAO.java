@@ -172,7 +172,6 @@ public class SubscriptionDAO {
 
             // Execute query
             statement.executeUpdate(query);
-            System.out.println("Insert complete");
 
         } catch (Exception e) {
             e.printStackTrace();
