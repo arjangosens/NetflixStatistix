@@ -32,9 +32,13 @@ public class OverviewSubscriptions extends JPanel implements Overview {
     private Object[][] data;
 
     public OverviewSubscriptions() {
+        // Define and fill the allUserProfiles ArrayList with all UserProfiles found in the database
         allUserProfiles = Subscription.getAllUserProfiles();
+        // Define and fill the allSubscriptions ArrayList with all Subscriptions found in the database
         allSubscriptions = Subscription.getAllSubscriptions();
+        // Call createColumnNames(), which creates the column names which are to be shown
         createCulumnNames();
+        // Call createComponents(), which creates all gui-components
         createComponents();
     }
 
@@ -43,6 +47,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
      * TODO: Fill the profiles object variable in this function.
      */
     private void createCulumnNames() {
+        // Define String Array to store the columnNames which are to be shown in the Subscription Overview table
         columnNames = new String[]{
                 "Connected profiles",
                 "Age"
@@ -53,15 +58,21 @@ public class OverviewSubscriptions extends JPanel implements Overview {
      * Load the table data with the connected UserProfiles
      */
     private void loadConnectedProfiles(int subId) {
+        // Define ArrayList to store all connected UserProfiles
         ArrayList<UserProfile> connectedUserProfiles = new ArrayList<>();
 
+        // Loop through the list of UserProfiles
         for (UserProfile userProfile : allUserProfiles) {
+            // Check if the subID given as parameter is equal to the userProfiles subID
             if (subId == userProfile.getSubId()) {
+                // Add the found UserProfile to the list of connectedUserProfiles
                 connectedUserProfiles.add(userProfile);
             }
         }
 
+        // Define Object Array to store connectedUserProfiles, which is used to show as table data
         data = new Object[connectedUserProfiles.size()][2];
+        // Loop through the
         for (int i = 0; i < connectedUserProfiles.size(); i++) {
             Object[] y = new Object[2];
 
