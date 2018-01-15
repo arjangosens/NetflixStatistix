@@ -62,6 +62,9 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         };
     }
 
+    /**
+     * Loads everything in the page.
+     */
     public void loadEverything() {
         loadSubscriptionComboboxData();
 //        loadConnectedProfiles();

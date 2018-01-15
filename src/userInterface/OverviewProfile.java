@@ -48,6 +48,9 @@ public class OverviewProfile extends JPanel implements Overview {
         createComponents();
     }
 
+    /**
+     * Loads everything in the class.
+     */
     public void loadEverything() {
         loadSubscriptionDropDown();
         loadProfileDropDown();
@@ -109,7 +112,7 @@ public class OverviewProfile extends JPanel implements Overview {
 
         // Store all userprofiles which correspond to the selected Subscription
         if (subscriptionDropDown.getSelectedItem() != null)
-            allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+            allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int) subscriptionDropDown.getSelectedItem());
 
         // Loop through all UserProfiles
         for (UserProfile userProfile : allUserProfiles) {
@@ -175,7 +178,7 @@ public class OverviewProfile extends JPanel implements Overview {
                 y[4] = tVshow.getAge();
                 // Set the sixth column to the duration of the Episode
                 y[5] = program.getDuration();
-
+                // Set the seventh column to the progress percentage of the viewbehaviour
                 y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
 
                 // Set the viewBehaviour table data
@@ -196,9 +199,9 @@ public class OverviewProfile extends JPanel implements Overview {
                 y[4] = film.getAge();
                 // Set the sixth column to the duration of the film
                 y[5] = film.getDuration();
-
+                // Set the seventh column to the progress percentage of the viewbehaviour
                 y[6] = viewBehaviours.get(i).getProgressPerct() + " %";
-                
+
                 data[i] = y;
             }
         }
@@ -264,7 +267,7 @@ public class OverviewProfile extends JPanel implements Overview {
         }
     }
 
-    private void updateUserProfile(int profileID , JTextField name, JTextField age) {
+    private void updateUserProfile(int profileID, JTextField name, JTextField age) {
         // Create profileDAO to connect to the database
         ProfileDAO profileDAO = new ProfileDAO(new DatabaseConnector());
         // Show a confirmation dialog asking the user to confirm their action
@@ -391,18 +394,18 @@ public class OverviewProfile extends JPanel implements Overview {
         // Add an ActionListener to the saveChanges button
         saveChangesButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent){
+            public void actionPerformed(ActionEvent actionEvent) {
                 // Define ArrayList of UserProfiles and store all UserProfiles from the database in this list
-                allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+                allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int) subscriptionDropDown.getSelectedItem());
                 // Loop through the list of UserProfiles
                 for (UserProfile profile : allUserProfiles) {
-                // Check if the profileName in the list is equal to the currently selected profile in the profileDropDown-menu
-                if (profile.getProfileName().equals(profileDropDown.getSelectedItem().toString())) {
-                    // Define and store the Subscription ID, which is gotten from the currently selected item in the Subscription dropdown-menu
-                    int subID = Integer.parseInt(subscriptionDropDown.getSelectedItem().toString());
-                    // Define and store the profileID
-                    int profileID = profile.getProfileId();
-                    // Call the updateUserProfile method, which updates the profile with the newly entered information
+                    // Check if the profileName in the list is equal to the currently selected profile in the profileDropDown-menu
+                    if (profile.getProfileName().equals(profileDropDown.getSelectedItem().toString())) {
+                        // Define and store the Subscription ID, which is gotten from the currently selected item in the Subscription dropdown-menu
+                        int subID = Integer.parseInt(subscriptionDropDown.getSelectedItem().toString());
+                        // Define and store the profileID
+                        int profileID = profile.getProfileId();
+                        // Call the updateUserProfile method, which updates the profile with the newly entered information
                         updateUserProfile(profileID, nameTextField, ageTextField);
                         // Reload the profile dropdown-menu
                         loadProfileDropDown();
@@ -412,7 +415,6 @@ public class OverviewProfile extends JPanel implements Overview {
         });
 
 
-
         // This button delets the currently selected subscription from the database (and the application).
         deleteProfileButton = new JButton("Delete");
         // Add ActionListener to the delete button
@@ -420,7 +422,7 @@ public class OverviewProfile extends JPanel implements Overview {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 // Get all UserProfiles from the database and store them in allUserProfiles ArrayList
-                allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+                allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int) subscriptionDropDown.getSelectedItem());
                 // Loop through list of UserProfiles
                 for (UserProfile profile : allUserProfiles) {
                     // Check if profileName in list is equal to the currently selected item in the profileDropdown-menu
@@ -437,7 +439,7 @@ public class OverviewProfile extends JPanel implements Overview {
         loadProfileInfo();
 
         // Set the external padding between the SubscriptionDropdownLabel and the edges of the layout
-        constraints.insets = new Insets(0,0,0,80);
+        constraints.insets = new Insets(0, 0, 0, 80);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -450,7 +452,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(subscriptionDropDownLabel, constraints);
 
         // Set the external padding between the SubscriptionDropdown-menu and the edges of the layout
-        constraints.insets = new Insets(0,80,0,0);
+        constraints.insets = new Insets(0, 80, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -463,7 +465,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(subscriptionDropDown, constraints);
 
         // Set the external padding between the profileDropDown-label and the edges of the layout
-        constraints.insets = new Insets(0,0,0,80);
+        constraints.insets = new Insets(0, 0, 0, 80);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -476,7 +478,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(profileDropDownLabel, constraints);
 
         // Set the external padding between the profileDropDown-menu and the edges of the layout
-        constraints.insets = new Insets(0,80,0,0);
+        constraints.insets = new Insets(0, 80, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -489,7 +491,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(profileDropDown, constraints);
 
         // Set the external padding between the profileDropDown-label and the edges of the layout
-        constraints.insets = new Insets(0,0,0,0);
+        constraints.insets = new Insets(0, 0, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -502,7 +504,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(createNewProfileButton, constraints);
 
         // Set the external padding between the jScrollPane and the edges of the layout
-        constraints.insets = new Insets(10,0,0,0);
+        constraints.insets = new Insets(10, 0, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -515,7 +517,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(jScrollPane, constraints);
 
         // Set the external padding between the nameLabel and the edges of the layout
-        constraints.insets = new Insets(10,0,0,80);
+        constraints.insets = new Insets(10, 0, 0, 80);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -528,7 +530,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(nameLabel, constraints);
 
         // Set the external padding between the nameTextField and the edges of the layout
-        constraints.insets = new Insets(10,80,0,0);
+        constraints.insets = new Insets(10, 80, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -541,7 +543,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(nameTextField, constraints);
 
         // Set the external padding between the ageLabel and the edges of the layout
-        constraints.insets = new Insets(10,0,0,80);
+        constraints.insets = new Insets(10, 0, 0, 80);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -554,7 +556,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(ageLabel, constraints);
 
         // Set the external padding between the ageTextField and the edges of the layout
-        constraints.insets = new Insets(10,80,0,0);
+        constraints.insets = new Insets(10, 80, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
         // Set leading cell location of the component
@@ -567,7 +569,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(ageTextField, constraints);
 
         // Set the external padding between the saveChangesButton and the edges of the layout
-        constraints.insets = new Insets(10,0,0,0);
+        constraints.insets = new Insets(10, 0, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.EAST;
         // Set leading cell location of the component
@@ -580,7 +582,7 @@ public class OverviewProfile extends JPanel implements Overview {
         this.add(saveChangesButton, constraints);
 
         // Set the external padding between the deleteProfileButton and the edges of the layout
-        constraints.insets = new Insets(10,0,0,0);
+        constraints.insets = new Insets(10, 0, 0, 0);
         // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.EAST;
         // Set leading cell location of the component
