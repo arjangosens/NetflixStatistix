@@ -107,6 +107,21 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         }
     }
 
+    private void loadSubscriberInfo(int subId) {
+        // Create connection with database
+        SubscriptionDAO subDAO = new SubscriptionDAO(new DatabaseConnector());
+        // Get the selected SubscriptionID
+        Subscription sub = subDAO.getSubscription(subId);
+        // Set the value of nameTextField to the name of the currently selected Subscription
+        nameTextField.setText(sub.getSubName());
+        // Set the value of streetTextField to the Street of the currently selected Subscription
+        streetTextField.setText(sub.getStreet());
+        // Set the value of houseNrTextField to the housenumber of the currently selected Subscription
+        houseNrTextField.setText(sub.getHouseNumber());
+        // Set the value of cityTextField to the city of the currently selected Subscription
+        cityTextField.setText(sub.getCity());
+    }
+
     @Override
     public void createComponents() {
         setLayout(new GridBagLayout());
@@ -210,6 +225,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
             public void actionPerformed(ActionEvent e) {
                 if (subsDropDown.getSelectedItem() != null) {
                     loadConnectedProfiles((int)subsDropDown.getSelectedItem());
+                    loadSubscriberInfo((int)subsDropDown.getSelectedItem());
                     defaultTableModel.setDataVector(data, columnNames);
                 }
             }
@@ -226,7 +242,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
 
 
         JLabel nameLabel = new JLabel("Name:");
-        nameTextField = new JTextField("[NAME]", 10);
+        nameTextField = new JTextField("");
         nameLabel.setLabelFor(nameTextField);
 
         constraints.insets = new Insets(0,0,0,80);
@@ -244,7 +260,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         this.add(nameTextField, constraints);
 
         JLabel streetLabel = new JLabel("Street:");
-        streetTextField = new JTextField("[STREET]", 10);
+        streetTextField = new JTextField("");
         streetLabel.setLabelFor(streetTextField);
 
         constraints.insets = new Insets(0,0,0,80);
@@ -262,7 +278,7 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         this.add(streetTextField, constraints);
 
         JLabel houseNrLabel = new JLabel("House Nr:");
-        houseNrTextField = new JTextField("[NR]", 3);
+        houseNrTextField = new JTextField("");
         houseNrLabel.setLabelFor(houseNrTextField);
 
         constraints.insets = new Insets(0,0,0,60);
@@ -280,8 +296,10 @@ public class OverviewSubscriptions extends JPanel implements Overview {
         this.add(houseNrTextField, constraints);
 
         JLabel cityLabel = new JLabel("City:");
-        cityTextField = new JTextField("[CITY]", 10);
+        cityTextField = new JTextField("");
         cityLabel.setLabelFor(cityTextField);
+
+        loadSubscriberInfo((int)subsDropDown.getSelectedItem());
 
         constraints.insets = new Insets(0,0,0,75);
         constraints.anchor = GridBagConstraints.CENTER;
