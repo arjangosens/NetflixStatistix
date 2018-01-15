@@ -57,6 +57,9 @@ public class OverviewSubscriptions extends JPanel implements Overview {
      * Load the table data with the connected UserProfiles
      */
     private void loadConnectedProfiles(int subId) {
+        allUserProfiles.clear();
+        allUserProfiles = Subscription.getAllUserProfiles();
+        
         // Define ArrayList to store all connected UserProfiles
         ArrayList<UserProfile> connectedUserProfiles = new ArrayList<>();
 
