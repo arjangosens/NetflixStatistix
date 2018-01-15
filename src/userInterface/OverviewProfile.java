@@ -189,6 +189,23 @@ public class OverviewProfile extends JPanel implements Overview {
         }
     }
 
+    private void deleteUserProfile(int profileID) {
+        ProfileDAO profileDao = new ProfileDAO(new DatabaseConnector());
+        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this profile?", "", JOptionPane.OK_CANCEL_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            profileDao.delete(profileID);
+            loadProfileDropDown();
+        }
+    }
+
+    private void updateUserProfile(int profileID , JTextField name, JTextField age) {
+        ProfileDAO profileDAO = new ProfileDAO(new DatabaseConnector());
+        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to update this profile?", "", JOptionPane.OK_CANCEL_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            profileDAO.update(name.getText().toString(), Integer.parseInt(age.getText().toString()), profileID);
+        }
+    }
+
     @Override
     public void createComponents() {
         JLabel subscriptionDropDownLabel = new JLabel("Select Subscription:");
@@ -224,6 +241,7 @@ public class OverviewProfile extends JPanel implements Overview {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 createProfileDialog();
+                loadProfileDropDown();
             }
         });
 
@@ -260,53 +278,37 @@ public class OverviewProfile extends JPanel implements Overview {
         /**
          * TODO: Convert the commented out code to fit profiles instead of subscriptions
          */
-//        saveChangesButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent actionEvent) {
-//                SubscriptionDAO subDao = new SubscriptionDAO(new DatabaseConnector());
-//                try {
-//                    int subID = Integer.parseInt(profileDropDown.getSelectedItem().toString());
-//                    String subName = nameTextField.getText();
-//                    String subStreet = streetTextField.getText();
-//                    String houseNumber = houseNrTextField.getText();
-//                    String city = cityTextField.getText();
-//
-//                    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
-//                    if (confirm == JOptionPane.YES_OPTION) {
-//                        subDao.update(subName, subStreet, houseNumber, city, subID);
-//                        System.out.println("Subscription information updated");
-//                    }
-//
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        saveChangesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent){
+                allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+                for (UserProfile profile : allUserProfiles) {
+                if (profile.getProfileName().equals(profileDropDown.getSelectedItem().toString())) {
+                    int subID = Integer.parseInt(subscriptionDropDown.getSelectedItem().toString());
+                    int profileID = profile.getProfileId();
+                        updateUserProfile(profileID, nameTextField, ageTextField);
+                        loadProfileDropDown();
+                    }
+                }
+            }
+        });
+
+
 
         // This button should delete the currently selected subscription from the database (and the application).
         deleteProfileButton = new JButton("Delete");
-
-        /**
-         * TODO: Convert the commented out code to fit profiles instead of subscriptions
-         */
-//        deleteProfileButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent actionEvent) {
-//                SubscriptionDAO subDAO = new SubscriptionDAO(new DatabaseConnector());
-//                try {
-//                    // Get the selected Subscription ID
-//                    int subID = Integer.parseInt(profileDropDown.getSelectedItem().toString());
-//                    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.OK_CANCEL_OPTION);
-//                    if (confirm == JOptionPane.YES_OPTION) {
-//                        subDAO.delete(subID);
-//                        System.out.println("Subscription deleted");
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        deleteProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+                for (UserProfile profile : allUserProfiles) {
+                    if (profile.getProfileName().equals(profileDropDown.getSelectedItem().toString())) {
+                        deleteUserProfile(profile.getProfileId());
+                        loadProfileDropDown();
+                    }
+                }
+            }
+        });
 
         this.add(subscriptionDropDownLabel);
         this.add(subscriptionDropDown);
