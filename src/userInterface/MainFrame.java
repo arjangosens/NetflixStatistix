@@ -28,9 +28,7 @@ public class MainFrame extends JFrame implements Runnable {
     public void run() {
         // Set the title of the window
         this.setTitle("Netflix Statistix");
-        // Set the resolution of the window
-        this.setSize(new Dimension(1250, 700));
-        // Set the action which is to be executed when the user presses the exit button
+        this.setSize(new Dimension(933, 700));
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         // This makes sure the windows spawns in the center of the screen
         this.setLocationRelativeTo(null);
