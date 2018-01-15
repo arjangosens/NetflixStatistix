@@ -88,4 +88,34 @@ class UserProfileTest {
         //Assert
         Assertions.assertEquals(0, returnvalue);
     }
+
+    // Unit tests for updateViewBehaviour()
+
+    @Test
+    void testUpdateViewBehaviourWithDifferentViewBehaviours() {
+        //Arrange
+        UserProfile userProfile = new UserProfile(1, 1, "Iemand", 18);
+        ViewBehaviour oldVB = new ViewBehaviour(1, 1, 1, 50);
+        ViewBehaviour newVB = new ViewBehaviour(1, 1, 1, 75);
+        userProfile.addViewBehaviour(oldVB);
+        //Act
+        userProfile.updateViewBehaviour(oldVB, newVB);
+        double returnValue = userProfile.getViewBehaviourArrayList().get(0).getProgressPerct();
+        //Assert
+        Assertions.assertEquals(75.0, returnValue);
+    }
+
+    @Test
+    void testUpdateViewBehaviourWithValuesNotPresentInArrayList() {
+        //Arrange
+        UserProfile userProfile = new UserProfile(1, 1, "Iemand", 18);
+        ViewBehaviour oldVB = new ViewBehaviour(1, 1, 1, 50);
+        ViewBehaviour newVB = new ViewBehaviour(1, 1, 1, 75);
+        //Act
+        userProfile.updateViewBehaviour(oldVB, newVB);
+        int returnvalue = userProfile.getViewBehaviourArrayList().size();
+        //Assert
+        Assertions.assertEquals(0, returnvalue);
+    }
+
 }
