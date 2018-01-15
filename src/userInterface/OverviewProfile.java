@@ -227,108 +227,142 @@ public class OverviewProfile extends JPanel implements Overview {
     }
 
     private void deleteUserProfile(int profileID) {
+        // Create profileDAO to connect to the database
         ProfileDAO profileDao = new ProfileDAO(new DatabaseConnector());
+        // Show a confirmation dialog asking the user to confirm their action
         int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this profile?", "", JOptionPane.OK_CANCEL_OPTION);
+        // Check if the user clicked the "OK" button
         if (confirm == JOptionPane.YES_OPTION) {
+            // Call the delete() method from the ProfileDAO, which deletes the given Profile from the database
             profileDao.delete(profileID);
+            // Reload the profileDropdown menu
             loadProfileDropDown();
         }
     }
 
     private void updateUserProfile(int profileID , JTextField name, JTextField age) {
+        // Create profileDAO to connect to the database
         ProfileDAO profileDAO = new ProfileDAO(new DatabaseConnector());
+        // Show a confirmation dialog asking the user to confirm their action
         int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to update this profile?", "", JOptionPane.OK_CANCEL_OPTION);
+        // Check if the user clicked the "OK" button
         if (confirm == JOptionPane.YES_OPTION) {
+            // Call the update() method from the ProfileDAO, which update the given Profile in the database
             profileDAO.update(name.getText().toString(), Integer.parseInt(age.getText().toString()), profileID);
         }
     }
 
     @Override
     public void createComponents() {
+        // Set the layout of the overViewProfile to GridbagLayout
         setLayout(new GridBagLayout());
+        // Define new GridBagConstraints
         GridBagConstraints constraints = new GridBagConstraints();
 
+        // Define a label for the Subscription dropdown-menu
         JLabel subscriptionDropDownLabel = new JLabel("Select Subscription:");
+        // Define a new combobox which is used as dropdown menu to show Subscriptions
         subscriptionDropDown = new JComboBox();
+        // Set the label for the Subscription dropdown-menu
         subscriptionDropDownLabel.setLabelFor(subscriptionDropDown);
-
-
 
         // Fill the subscriptionDropDown with id's
         loadSubscriptionDropDown();
 
+        // Add an ActionListener to the Subscriptions dropdown-menu
         subscriptionDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Load the profiles in the dropdown menu corresponding to the Subscription ID
                 loadProfileDropDown();
             }
         });
 
+        // Define a label for the UserProfiles dropdown-menu
         JLabel profileDropDownLabel = new JLabel("Select Profile:");
+        // Define a new combobox which is used as dropdown menu to show UserProfiles
         profileDropDown = new JComboBox();
+        // Set the label for the UserProfiles dropdown-menu
         profileDropDownLabel.setLabelFor(profileDropDown);
 
         // Fill the profileDropDown with profileNames based on the subscriptionDropDown id
         loadProfileDropDown();
 
 
-
-        /**
-         * TODO: Create DAO for profiles and convert the commented out code to fit profiles instead of subscriptions
-         */
-
         // This button opens an input screen where users can make a new profile in the current subscription
         createNewProfileButton = new JButton("Create new profile");
+        // Add ActionListener to createNewProfile button
         createNewProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                // Calls createProfileDialog, which opens a dialog in which users can enter information to create a new UserProfile
                 createProfileDialog();
+                // Reload the UserProfile dropdown-menu
                 loadProfileDropDown();
             }
         });
 
+        // Define a new table for to show the viewBehaviour
         viewBehaviourTable = new JTable();
+        // Define a table model which is to be used by the viewBehaviourTable
         DefaultTableModel defaultTableModel = (DefaultTableModel) viewBehaviourTable.getModel();
 
+        // Load the viewBehaviourTable data
         loadViewBehaviour();
 
+        // Add an ActionListener to the profileDropDown-menu
         profileDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Check if there is a profile selected in the profileDropDown-menu
                 if (profileDropDown.getSelectedItem() != null)
+                    // Load the viewBehaviour from the selected UserProfile
                     loadViewBehaviour();
 
+                // Fill the table with the columnnames and data
                 defaultTableModel.setDataVector(data, columnNames);
             }
         });
 
+        // Fill the table with the columnnames and data
         defaultTableModel.setDataVector(data, columnNames);
+        // Define a new jScrollPane, which makes the table scrollable and adds a scrollbar
         JScrollPane jScrollPane = new JScrollPane(viewBehaviourTable);
 
+        // Define a label for the name input field
         JLabel nameLabel = new JLabel("Name:");
+        // Define a nameTextField in which the user can enter their name
         nameTextField = new JTextField("[NAME]", 10);
+        // Add the label to the nameTextField
         nameLabel.setLabelFor(nameTextField);
 
+        // Define a label for the age input field
         JLabel ageLabel = new JLabel("Age:");
+        // Define an ageTextField in which the user can enter their age
         ageTextField = new JTextField("[AGE]", 10);
+        // Add the label to the ageTextField
         nameLabel.setLabelFor(ageTextField);
 
 
-        // This button should save the input from the textfields above.
+        // This button saves the input from the textfields above.
         saveChangesButton = new JButton("Save changes");
-
-        /**
-         * TODO: Convert the commented out code to fit profiles instead of subscriptions
-         */
+        // Add an ActionListener to the saveChanges button
         saveChangesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent){
+                // Define ArrayList of UserProfiles and store all UserProfiles from the database in this list
                 allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+                // Loop through the list of UserProfiles
                 for (UserProfile profile : allUserProfiles) {
+                // Check if the profileName in the list is equal to the currently selected profile in the profileDropDown-menu
                 if (profile.getProfileName().equals(profileDropDown.getSelectedItem().toString())) {
+                    // Define and store the Subscription ID, which is gotten from the currently selected item in the Subscription dropdown-menu
                     int subID = Integer.parseInt(subscriptionDropDown.getSelectedItem().toString());
+                    // Define and store the profileID
                     int profileID = profile.getProfileId();
+                    // Call the updateUserProfile method, which updates the profile with the newly entered information
                         updateUserProfile(profileID, nameTextField, ageTextField);
+                        // Reload the profile dropdown-menu
                         loadProfileDropDown();
                     }
                 }
@@ -337,104 +371,181 @@ public class OverviewProfile extends JPanel implements Overview {
 
 
 
-        // This button should delete the currently selected subscription from the database (and the application).
+        // This button delets the currently selected subscription from the database (and the application).
         deleteProfileButton = new JButton("Delete");
+        // Add ActionListener to the delete button
         deleteProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                // Get all UserProfiles from the database and store them in allUserProfiles ArrayList
                 allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
+                // Loop through list of UserProfiles
                 for (UserProfile profile : allUserProfiles) {
+                    // Check if profileName in list is equal to the currently selected item in the profileDropdown-menu
                     if (profile.getProfileName().equals(profileDropDown.getSelectedItem().toString())) {
+                        // Call the deleteUserProfile() method, which deletes the profile corresponding to the given profileID from the database
                         deleteUserProfile(profile.getProfileId());
+                        // Reload the profileDropDown-menu
                         loadProfileDropDown();
                     }
                 }
             }
         });
 
-
+        // Set the external padding between the SubscriptionDropdownLabel and the edges of the layout
         constraints.insets = new Insets(0,0,0,80);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 0;
+        // Set top most cell location of the component
         constraints.gridy = 0;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the Subscriptiondropdown-label and the constraints to the Profile overview page
         this.add(subscriptionDropDownLabel, constraints);
 
+        // Set the external padding between the SubscriptionDropdown-menu and the edges of the layout
         constraints.insets = new Insets(0,80,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 0;
+        // Set top most cell location of the component
         constraints.gridy = 0;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the Subscriptiondropdown-menu and the constraints to the Profile overview page
         this.add(subscriptionDropDown, constraints);
 
+        // Set the external padding between the profileDropDown-label and the edges of the layout
         constraints.insets = new Insets(0,0,0,80);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 1;
+        // Set top most cell location of the component
         constraints.gridy = 0;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the profileDropDown-label and the constraints to the Profile overview page
         this.add(profileDropDownLabel, constraints);
 
+        // Set the external padding between the profileDropDown-menu and the edges of the layout
         constraints.insets = new Insets(0,80,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 1;
+        // Set top most cell location of the component
         constraints.gridy = 0;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the profileDropDown-menu and the constraints to the Profile overview page
         this.add(profileDropDown, constraints);
 
+        // Set the external padding between the profileDropDown-label and the edges of the layout
         constraints.insets = new Insets(0,0,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 2;
+        // Set top most cell location of the component
         constraints.gridy = 0;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the createNeProfile-button and the constraints to the Profile overview page
         this.add(createNewProfileButton, constraints);
 
+        // Set the external padding between the jScrollPane and the edges of the layout
         constraints.insets = new Insets(10,0,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 0;
+        // Set top most cell location of the component
         constraints.gridy = 3;
+        // Set number of cells in a row
         constraints.gridwidth = 4;
+        // Add the jScrollPane and the constraints to the Profile overview page
         this.add(jScrollPane, constraints);
 
+        // Set the external padding between the nameLabel and the edges of the layout
         constraints.insets = new Insets(10,0,0,80);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 0;
+        // Set top most cell location of the component
         constraints.gridy = 4;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the nameLabel and the constraints to the Profile overview page
         this.add(nameLabel, constraints);
 
+        // Set the external padding between the nameTextField and the edges of the layout
         constraints.insets = new Insets(10,80,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 0;
+        // Set top most cell location of the component
         constraints.gridy = 4;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the nameTextField and the constraints to the Profile overview page
         this.add(nameTextField, constraints);
 
+        // Set the external padding between the ageLabel and the edges of the layout
         constraints.insets = new Insets(10,0,0,80);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 1;
+        // Set top most cell location of the component
         constraints.gridy = 4;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the ageLabel and the constraints to the Profile overview page
         this.add(ageLabel, constraints);
 
+        // Set the external padding between the ageTextField and the edges of the layout
         constraints.insets = new Insets(10,80,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.CENTER;
+        // Set leading cell location of the component
         constraints.gridx = 1;
+        // Set top most cell location of the component
         constraints.gridy = 4;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the ageTextField and the constraints to the Profile overview page
         this.add(ageTextField, constraints);
 
+        // Set the external padding between the saveChangesButton and the edges of the layout
         constraints.insets = new Insets(10,0,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.EAST;
+        // Set leading cell location of the component
         constraints.gridx = 0;
+        // Set top most cell location of the component
         constraints.gridy = 5;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the saveChangesButton and the constraints to the Profile overview page
         this.add(saveChangesButton, constraints);
 
+        // Set the external padding between the deleteProfileButton and the edges of the layout
         constraints.insets = new Insets(10,0,0,0);
+        // Set the anchorpoint used by the layout
         constraints.anchor = GridBagConstraints.EAST;
+        // Set leading cell location of the component
         constraints.gridx = 1;
+        // Set top most cell location of the component
         constraints.gridy = 5;
+        // Set number of cells in a row
         constraints.gridwidth = 1;
+        // Add the deleteProfileButton and the constraints to the Profile overview page
         this.add(deleteProfileButton, constraints);
     }
 }
