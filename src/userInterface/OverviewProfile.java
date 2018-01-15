@@ -31,16 +31,19 @@ public class OverviewProfile extends JPanel implements Overview {
     private Object[][] data;
 
     public OverviewProfile() {
+        // Define ArrayList to store subscriptions, add all subscriptions found in the database to the ArrayList
         allSubscriptions = Subscription.getAllSubscriptions();
+        // Call createTestData()
         createTestData();
         createComponents();
     }
 
     /**
      * Create the testData for the table.
-     * TODO: Fill the profiles object variable in this function.
+     * TODO: Change createTestData name to createColumnData
      */
     private void createTestData() {
+        // Define String Array to store column names
         columnNames = new String[]{
                 "EpisodeNumber",
                 "Title",
@@ -55,10 +58,10 @@ public class OverviewProfile extends JPanel implements Overview {
      * Load the data that is viewed in the subscriptionDropDown JComboBox
      */
     private void loadSubscriptionDropDown() {
-        // This array holds the id's for that will be viewed in the comboBox.
+        // This array holds the subscription id's that will be shown in the Subscription dropdown-menu.
         List<Integer> subscriptionIDs = new ArrayList<>();
 
-        // Now we update the allSubscriptions ArrayList.
+        // Fill the Subscription ArrayList with all the subscriptions from the database
         allSubscriptions = Subscription.getAllSubscriptions();
 
         // Loop through allSubscriptions to get the subscriptionId.
@@ -70,7 +73,7 @@ public class OverviewProfile extends JPanel implements Overview {
         // Sort the arrayList
         Collections.sort(subscriptionIDs);
 
-        // And at last, add the id's to the comboBox.
+        // And at last, add the id's to the Subscription dropdownmenu.
         for (Integer id : subscriptionIDs) {
             subscriptionDropDown.addItem(id);
         }
@@ -80,63 +83,96 @@ public class OverviewProfile extends JPanel implements Overview {
      * Load the data that is viewed in the profileDropDown JComboBox.
      */
     private void loadProfileDropDown() {
+        // Define ArrayList to store profileNames
         List<String> profileNames = new ArrayList<>();
+        // Clear the dropdown menu
         profileDropDown.removeAllItems();
 
+        // Store all userprofiles which correspond to the selected Subscription
         allUserProfiles = UserProfile.getUserProfilesBySubscriptionId((int)subscriptionDropDown.getSelectedItem());
 
+        // Loop through all UserProfiles
         for (UserProfile userProfile : allUserProfiles) {
+            // Add all UserProfile names to the list of ProfileNames
             profileNames.add(userProfile.getProfileName());
         }
 
+        // Loop through profileName list
         for (String profileName : profileNames) {
+            // Add all profileNames to the profile dropdown-menu
             profileDropDown.addItem(profileName);
         }
     }
 
     public void loadViewBehaviour() {
+        // Define a UserProfile object
         UserProfile currentUserProfile = null;
+        // Define ArrayList to store all viewBehaviour
         ArrayList<ViewBehaviour> viewBehaviours = new ArrayList<>();
 
+        // Loop through list of UserProfiles
         for (UserProfile userProfile : allUserProfiles) {
+            // Check if UserProfile name is equal to the selected profileName from the dropdown menu
             if (userProfile.getProfileName().equals(profileDropDown.getSelectedItem())) {
+                // Set currentUserProfile object to userProfile
                 currentUserProfile = userProfile;
             }
         }
 
+        // Clear the viewBehaviour list
         viewBehaviours.clear();
+        // get viewbehaviour list from database and store it in this variable
         viewBehaviours = UserProfile.getViewbehaviourByUserProfileId(currentUserProfile.getProfileId());
 
+        // Loop through the list of viewbehaviour
         for (ViewBehaviour viewBehaviour : viewBehaviours) {
+            // Add every viewbehaviour object to the viewBehaviour list
             currentUserProfile.addViewBehaviour(viewBehaviour);
         }
 
+        // Define object array to store viewbehaviour table data
         data = new Object[viewBehaviours.size()][6];
+        // Loop through viewBehaviour array
         for (int i = 0; i < viewBehaviours.size(); i++) {
+            // Define program object and get the program corresponding to programID
             Program program = Program.getProgramById(viewBehaviours.get(i).getProgramId());
 
+            // Define object array to store viewBehaviour information
             Object[] y = new Object[6];
+            // Check if program is an instance of Episode
             if (program instanceof Episode) {
-
-
+                // Set the first column to the Episodenumber
                 y[0] = ((Episode) program).getEpisodeNumber();
+                // Set the second column to the title of the Episode
                 y[1] = ((Episode) program).getTitle();
-
+                // Define a TVshow object to show in the table
                 TVshow tVshow = TVshow.get(((Episode) program).getTvShowId());
+                // Set the third column to the genre of the TvShow
                 y[2] = tVshow.getGenre();
+                // Set the fourth column to the language of the TvShow
                 y[3] = tVshow.getLanguage();
+                // Set the fifth column to the age of the TvShow
                 y[4] = tVshow.getAge();
+                // Set the sixth column to the duration of the Episode
                 y[5] = program.getDuration();
 
+                // Set the viewBehaviour table data
                 data[i] = y;
             } else {
+                // Define new Film object
                 Film film = (Film) program;
 
+                // Set first column to be empty
                 y[0] = "";
+                // Set the second column to the title of the Film
                 y[1] = film.getTitle();
+                // Set the third column to the genre of the Film
                 y[2] = film.getGenre();
+                // Set the fourth column to the language of the Film
                 y[3] = film.getLanguage();
+                // Set the fifth column to the age of the Film
                 y[4] = film.getAge();
+                // Set the sixth column to the duration of the film
                 y[5] = film.getDuration();
 
                 data[i] = y;
