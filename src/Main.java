@@ -1,4 +1,3 @@
-import database.DatabaseConnector;
 import userInterface.MainFrame;
 
 import javax.swing.*;

@@ -1,52 +1,32 @@
 package userInterface;
 
 import applicationLogic.Film;
+import database.FilmDAO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 
 public class OverviewFilm extends JPanel implements Overview {
-    private JComboBox filmDropDown;
-    private ArrayList<Film> films;
+    private ArrayList<Film> films = new ArrayList<>();
     private JTable jTable;
     private String[] columnNames;
     private Object[][] data;
 
     public OverviewFilm(){
+        // Get all Films from the database and store them in Set filmSet
+        Set<Film> filmSet = Film.getAll();
+        // Load table columns and data
+        prepareContent(filmSet);
+        // Create gui-components
         createComponents();
     }
 
-//    public OverviewFilm(String[] columnNames, Object[][] data) {
-//        this.filmDropDown = new JComboBox();
-//        this.films =  new ArrayList<Film>();
-//        this.jTable = new JTable();
-//        this.columnNames = columnNames;
-//        this.data = data;
-//
-//        createComponents();
-//    }
-
-    @Override
-    public void createComponents() {
-        // Create test items for comboBox
-        String[] testValues = {
-                "Select film", "Lord of the Rings",
-                "Pepa Pig",
-                "Frozen",
-                "Buurman en Buurman",
-                "The pick of destiny"
-        };
-
-        // Create comboBox
-        filmDropDown = new JComboBox(testValues);
-
-        // Create Label for combobox
-        JLabel labelFilmDropDown = new JLabel("Select a film");
-        labelFilmDropDown.setLabelFor(filmDropDown);
-
+    private void prepareContent(Set<Film> filmSet) {
         // Create column names
-        String[] columnNames = {
+        columnNames = new String[]{
                 "Title",
                 "Genre",
                 "Language",
@@ -54,21 +34,47 @@ public class OverviewFilm extends JPanel implements Overview {
                 "Age"
         };
 
-        // Create test data for JTable
-        Object[][] testData = {
-            {"Lord of the Rings", "Leuk", "English", 200, 12},
-            {"Pepa Pig", "Child", "Dutch", 120, 3},
-            {"Frozen", "Leuk", "English", 97, 9},
-            {"Buurman en Buurman", "Facking Leuk!", "Dutch", 30, 3},
-            {"The pick of destiny", "Awesome", "English", 120, 12}
-        };
+        // Loop through set of Films
+        for (Film film : filmSet) {
+            // Add all films to the films ArrayList
+            Collections.addAll(films, film);
+        }
 
-        // Create JTable
-        jTable = new JTable(testData, columnNames);
+        // Define a new data Object, which is used as the table data
+        data = new Object[films.size()][5];
+        // Loop through the films ArrayList
+        for (int i = 0; i < films.size(); i++) {
+            // Define a new object in which the column values will be stored
+            Object[] x = new Object[5];
+            // The first column will hold the Film Title
+            x[0] = films.get(i).getTitle();
+            // The second column will hold the Film Genre
+            x[1] = films.get(i).getGenre();
+            // The third column will hold the Film Language
+            x[2] = films.get(i).getLanguage();
+            // The fourth column will hold the Film Duration
+            x[3] = films.get(i).getDuration();
+            // The fifth column will hold the Film Age
+            x[4] = films.get(i).getAge();
+
+            // Set the column data
+            data[i] = x;
+        }
+    }
+
+    @Override
+    public void createComponents() {
+        // Set the layout of the OverViewFilm to GridBagLayout
+        setLayout(new GridBagLayout());
+        // Define new GridBagConstraints
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        // Create JTable to show Film information
+        jTable = new JTable(data, columnNames);
+        // Set a scrollpane in the table, this makes the table scrollable
         JScrollPane scrollPane = new JScrollPane(jTable);
 
-        this.add(labelFilmDropDown);
-        this.add(filmDropDown);
-        this.add(scrollPane);
+        // Add the Film dropdown menu and the constraints to the Film overview page
+        this.add(scrollPane, constraints);
     }
 }
